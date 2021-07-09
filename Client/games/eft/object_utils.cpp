@@ -57,6 +57,12 @@ games::eft::c_game_world games::eft::c_game_objects::get_game_world()
        
         if (!CurrentGameObject) continue;
 
+        if (future_stop)
+        {
+            future_stop = 0;
+            return 0;
+        }
+
         if (CurrentObject == cur) break;
 
         uint64_t pCurrentObjectName = games::c_phys_util::Instance().phys_read<uint64_t>(CurrentGameObject + 0x60);
@@ -98,6 +104,12 @@ games::eft::c_camera games::eft::c_game_objects::get_fps_object()
     for (uint64_t CurrentObject = games::c_phys_util::Instance().phys_read<uint64_t>(game_object_manager + 0x8);;
         CurrentObject = games::c_phys_util::Instance().phys_read<uint64_t>(CurrentObject + 0x8))
     {
+        if (future_stop)
+        {
+            future_stop = 0;
+            return 0;
+        }
+
         uint64_t CurrentGameObject = games::c_phys_util::Instance().phys_read<uint64_t>(CurrentObject + 0x10);
         if (!CurrentGameObject) continue;
 

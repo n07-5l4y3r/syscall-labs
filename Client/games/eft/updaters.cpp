@@ -9,19 +9,21 @@ void games::eft::c_updater::update_players()
 	auto a = w.get_players();
 	auto list = decltype(this->players)();
 
-	if (!list.size()) localplayer = 0;
-	else
+	auto get_pos = [this](games::eft::c_player* player, games::eft::Bones bone) -> void
 	{
-		if (!localplayer) localplayer = w.get_local().base;
-	}
+		player->bones[bone] = player->get_bone(bone);
+	};
 
 	for (auto&& m : a)
 	{
 		if (m.base == localplayer) continue;
 		if (!m.has_bone(133)) continue;
 
-		m.bones[Bones::HumanHead] = m.get_bone(Bones::HumanHead);
-		m.bones[Bones::HumanRFoot] = m.get_bone(Bones::HumanRFoot);
+		std::async(std::launch::async, get_pos, &m, Bones::HumanHead);
+		std::async(std::launch::async, get_pos, &m, Bones::HumanRFoot);
+
+		/*m.bones[Bones::HumanHead] = m.get_bone(Bones::HumanHead);
+		m.bones[Bones::HumanRFoot] = m.get_bone(Bones::HumanRFoot);*/
 
 		/*m.bones[Bones::HumanHead] = m.get_bone(Bones::HumanHead);
 		m.bones[Bones::HumanNeck] = m.get_bone(Bones::HumanNeck);
@@ -52,6 +54,7 @@ void games::eft::c_updater::update_players()
 		if (!m.root_pos.valid()) continue;*/
 
 		//printf("%p - %f %f %f , %f %f %f\n", m.base, m.head_pos.x, m.head_pos.y, m.head_pos.z, m.root_pos.x, m.root_pos.y, m.root_pos.z);
+		m.ai = m.is_ai();
 		list.push_back(m);
 	}
 
@@ -60,12 +63,32 @@ void games::eft::c_updater::update_players()
 
 void games::eft::c_updater::update_fps_object()
 {
-	Instance().fps_object = games::eft::c_game_objects::Instance().get_fps_object().base;
+	auto result = std::async(std::launch::async, [this]()
+		{
+			Instance().fps_object = games::eft::c_game_objects::Instance().get_fps_object().base;
+		});
+	auto wait = result.wait_for(std::chrono::seconds(5));
+	if (wait == std::future_status::timeout)
+	{
+		games::eft::c_game_objects::Instance().future_stop = 1;
+		printf("%s timed out\n", __FUNCTION__);
+		return;
+	}
 }
 
 void games::eft::c_updater::update_world_object()
 {
-	Instance().world_object = games::eft::c_game_objects::Instance().get_game_world().base;
+	auto result = std::async(std::launch::async, [this]()
+		{
+			Instance().world_object = games::eft::c_game_objects::Instance().get_game_world().base;
+		});
+	auto wait = result.wait_for(std::chrono::seconds(5));
+	if (wait == std::future_status::timeout)
+	{
+		games::eft::c_game_objects::Instance().future_stop = 1;
+		printf("%s timed out\n", __FUNCTION__);
+		return;
+	}
 }
 
 void games::eft::c_updater::setup()

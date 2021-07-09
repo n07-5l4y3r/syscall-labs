@@ -2,7 +2,6 @@
 
 games::c_vector3 games::eft::c_player::get_pos()
 {
-
     uint64_t PlayerBody = games::c_phys_util::Instance().phys_read<uint64_t>(this->base + 0xa8);
     if (!PlayerBody) return {};
 

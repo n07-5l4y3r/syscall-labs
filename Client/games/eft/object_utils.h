@@ -19,6 +19,7 @@ namespace games
 		class c_game_objects : public s<c_game_objects>
 		{
 		public:
+			bool						future_stop = false;
 			void						dump_objects();
 			c_game_world				get_game_world();
 			c_camera					get_fps_object();

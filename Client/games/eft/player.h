@@ -316,7 +316,9 @@ namespace games
 		{
 		public:
 			UINT64					base = 0;
-			c_player(UINT64 m)		{ base = m; };
+			bool					ai = 0;
+			c_player(UINT64 m) { base = m; };
+			c_player()		   { };
 			//
             t_bones                 bones;
 			//

@@ -44,6 +44,15 @@ namespace games
 		{
 			return x * v.x + y * v.y + z * v.z;
 		}
+		inline float len(c_vector3 v)
+		{
+			return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+		}
+		inline float dst(c_vector3 t)
+		{
+			auto a = x - t.x; auto b = y - t.y; auto c = z - t.z;
+			return sqrtf(a * a + b * b + c * c);
+		}
 		float x = 0, y = 0, z = 0;
 		float pause = 0;
 	};

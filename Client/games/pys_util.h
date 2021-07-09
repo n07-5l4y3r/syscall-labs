@@ -27,7 +27,7 @@ namespace games
 				}
 				return *(T*)(ret_readmem.data.obj.buf);
 			}
-			else return {};
+			return {};
 		}
 		template<typename T>
 		T phys_read_sized(UINT64 address, uint32_t s)
@@ -47,7 +47,7 @@ namespace games
 				}
 				return *(T*)(ret_readmem.data.obj.buf);
 			}
-			else return {};
+			return {};
 		}
 		template<typename T>
 		bool phys_write(UINT64 address, T buf)

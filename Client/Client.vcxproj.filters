@@ -52,6 +52,7 @@
     <ClCompile Include="games\eft\camera.cpp" />
     <ClCompile Include="games\eft\updaters.cpp" />
     <ClCompile Include="games\vec3.cpp" />
+    <ClCompile Include="games\eft\cheese.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="games\vec3.h" />
     <ClInclude Include="games\eft\camera.h" />
     <ClInclude Include="games\eft\updaters.h" />
+    <ClInclude Include="games\eft\cheese.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="rendering\fx\Effects11.lib" />

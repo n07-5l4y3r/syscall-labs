@@ -33,8 +33,7 @@ games::eft::t_players games::eft::c_game_world::get_players()
     {
         games::eft::c_player CurrentPlayer = games::c_phys_util::Instance().phys_read<uint64_t>(PlayerArray + 0x20 + (i * 0x8));
         if (!CurrentPlayer.base) continue;
-
-        if (games::c_phys_util::Instance().phys_read<bool>(CurrentPlayer.base + 0x18) && !games::c_phys_util::Instance().phys_read<bool>(CurrentPlayer.base + 0x5f1) && games::c_phys_util::Instance().phys_read<uint64_t>(CurrentPlayer.base + 0x10) && games::c_phys_util::Instance().phys_read<uint64_t>(CurrentPlayer.base + 0x88)) ret.push_back(CurrentPlayer);
+        ret.push_back(CurrentPlayer);
     }
 
     return ret;
@@ -54,7 +53,7 @@ games::eft::c_player games::eft::c_game_world::get_local()
     for (int i = 0; i < PlayerCount; i++)
     {
         uint64_t CurrentPlayer = games::c_phys_util::Instance().phys_read<uint64_t>(PlayerArray + 0x20 + (i * 0x8));
-        if (games::c_phys_util::Instance().phys_read<bool>(CurrentPlayer + 0x5f1) && games::c_phys_util::Instance().phys_read<uint64_t>(CurrentPlayer + 0x10))
+        if (games::c_phys_util::Instance().phys_read<bool>(CurrentPlayer + 0x5f1))
             return CurrentPlayer;
     }
 

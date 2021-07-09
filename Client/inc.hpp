@@ -1,6 +1,24 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #define _WIN32_WINNT 0x600
+
+template <typename T>
+class s
+{
+public:
+	static T& Instance()
+	{
+		static T instance;
+		return instance;
+	}
+protected:
+	s() {}
+	~s() {}
+public:
+	s(s const&) = delete;
+	s& operator=(s const&) = delete;
+};
+
 #include <iostream>
 #include <map>
 #include <chrono>
@@ -30,22 +48,6 @@
 #include <D3D11Shader.h>
 #include "rendering/fx/d3dx11effect.h"
 
-template <typename T>
-class s
-{
-public:
-	static T& Instance()
-	{
-		static T instance;
-		return instance;
-	}
-protected:
-	s() {}
-	~s() {}
-public:
-	s(s const&) = delete;
-	s& operator=(s const&) = delete;
-};
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment( lib, "DXErr" )
@@ -105,6 +107,7 @@ public:
 #include "games/eft/game_world.h"
 #include "games/eft/updaters.h"
 #include "games/eft/object_utils.h"
+#include "games/eft/cheese.h"
 
 #include "games/arma3/util_entity.h"
 

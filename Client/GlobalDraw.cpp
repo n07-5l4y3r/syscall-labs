@@ -217,6 +217,7 @@ public:
 			//printf("[%s		%llu	ms] rcv size: %lu\n", __FUNCTION__, std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::microseconds(took_time)).count(), ret_readmem.data.obj.read);
 			return *(T*)(ret_readmem.data.obj.buf);
 		}
+		return {};
 	}
 	template<typename T>
 	static bool phys_write(UINT64 address, UINT64 target, T buf)
@@ -345,6 +346,36 @@ public:
 
 static bool eft_bonknation = 0;
 
+
+games::c_vector3 CalculateAngle(games::c_vector3 EnemyPos, games::c_vector3 fireport)
+{
+	games::c_vector3 TempReturn;
+	games::c_vector3 Relative;
+	/*if(isScopedOptic())
+	{
+		Relative = GetOptic() - EnemyPos;
+		printf("scoped\n");
+	}
+	else
+	{*/
+	Relative = fireport;
+
+	Relative.x -= EnemyPos.x;
+	Relative.y -= EnemyPos.y;
+	Relative.z -= EnemyPos.z;
+	//}
+	long double Magnitude = Relative.len(Relative);
+	long double Pitch = asin(Relative.y / Magnitude);
+	long double Yaw = -atan2(Relative.x, -Relative.z);
+	Yaw = Yaw * 57.2957795130823209;
+	Pitch = Pitch * 57.2957795130823209;
+	TempReturn.x = Yaw;
+	TempReturn.y = Pitch;
+	return TempReturn;
+}
+
+static bool done_last_local_stuff = true;
+
 void esp_eft()
 {
 	auto t1 = std::chrono::high_resolution_clock::now();
@@ -400,8 +431,9 @@ void esp_eft()
 	printf("%f		%f		%f		%f\n\n\n",	v.m[3][0], v.m[3][1], v.m[3][2], v.m[3][3]);*/
 
 	auto gw = (games::eft::c_game_world)(games::eft::c_updater::Instance().world_object);
-	auto local = (games::eft::c_player)games::eft::c_updater::Instance().localplayer;
 	//auto local_fireport = local.get_fireport();
+
+	games::eft::c_updater::Instance().localplayer = gw.get_local().base;
 
 	//games::c_vector3 fireport_w2s;
 	//if (c.w2s(local_fireport, fireport_w2s, ViewMatrix))
@@ -409,7 +441,8 @@ void esp_eft()
 	//	sdk::render::render->RenderText(fireport_w2s.x, fireport_w2s.y, 0xff00ff00, (char*)"fireport");
 	//}
 
-	//recoil bonk
+	auto local = (games::eft::c_player)games::eft::c_updater::Instance().localplayer;
+
 	if (local.base)
 	{
 		auto ProceduralWeaponAnimation = games::c_phys_util::Instance().phys_read<UINT64>(local.base + 0x190);
@@ -418,20 +451,88 @@ void esp_eft()
 			auto Breath = games::c_phys_util::Instance().phys_read<UINT64>(ProceduralWeaponAnimation + 0x28);
 			if (Breath)
 			{
+				uint64_t WalkEffector = games::c_phys_util::Instance().phys_read<uint64_t>(ProceduralWeaponAnimation + 0x30);
+				if (!WalkEffector)
+				{
+					return;
+				}
+
+				uint64_t MotionEffector = games::c_phys_util::Instance().phys_read<uint64_t>(ProceduralWeaponAnimation + 0x38);
+				if (!MotionEffector)
+				{
+					return;
+				}
+
+				uint64_t ForceEffector = games::c_phys_util::Instance().phys_read<uint64_t>(ProceduralWeaponAnimation + 0x40);
+				if (!ForceEffector)
+				{
+					return;
+				}
+
+				uint64_t ShootingEffector = games::c_phys_util::Instance().phys_read<uint64_t>(ProceduralWeaponAnimation + 0x48);
+				if (!ShootingEffector)
+				{
+					return;
+				}
+
 				games::c_phys_util::Instance().phys_write<float>(Breath + 0xA4, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(Breath + 0xAC, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(Breath + 0xA8, 0.f);
+
+				games::c_phys_util::Instance().phys_write<float>(Breath + 0xA4, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(Breath + 0xAc, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(Breath + 0xA8, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(WalkEffector + 0x44, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(MotionEffector + 0xd0, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(ForceEffector + 0x30, 0.f);
+				games::c_phys_util::Instance().phys_write<float>(ShootingEffector + 0x68, 0.f);
+
 				games::c_phys_util::Instance().phys_write<float>(ProceduralWeaponAnimation + 0x22C, 0.f);
 				games::c_phys_util::Instance().phys_write<float>(ProceduralWeaponAnimation + 0x228, 0.f);
 				games::c_phys_util::Instance().phys_write<float>(ProceduralWeaponAnimation + 0x100, 1.f);
 				games::c_phys_util::Instance().phys_write<float>(ProceduralWeaponAnimation + 0x2f4, 0.f);
 			}
+			if (GetAsyncKeyState(VK_XBUTTON1))
+			{
+				sdk::render::render->DrawCircle(1920 / 2, 1080 / 2, 60, 0xffff0000);
+
+				auto local_fireport = local.get_fireport();
+				auto enemy_target = games::c_vector3();
+
+				auto movectx = games::c_phys_util::Instance().phys_read<UINT64>(local.base + 0x40);
+
+				float dst_to_last = 9999999.f;
+
+				for (auto&& a : p)
+				{
+					a.bones[games::eft::Bones::HumanHead] = a.get_bone(games::eft::Bones::HumanHead);
+					//auto dst_to_this = a.bones[games::eft::Bones::HumanHead].dst(local_fireport);
+					auto w2s_head = games::c_vector3();
+
+					if (!c.w2s(a.bones[games::eft::Bones::HumanHead], w2s_head, ViewMatrix)) continue;
+
+					float e = w2s_head.dst({ 1920 / 2, 1080 / 2,0 });
+					if (e > 60.f) continue;
+
+					if (e < dst_to_last)
+					{
+						dst_to_last = e;
+						enemy_target = a.bones[games::eft::Bones::HumanHead];
+					}
+				}
+				if (enemy_target.valid())
+				{
+					auto ang = CalculateAngle(enemy_target, local_fireport);
+					games::c_phys_util::Instance().phys_write<D3DXVECTOR2>(movectx + 0x20C, { ang.x, ang.y });
+				}
+			}
+			else sdk::render::render->DrawCircle(1920 / 2, 1080 / 2, 60, 0xff00ff00);
 		}
 	}
 
 	for (auto&& a : p)
 	{
 		auto w2s_bones = games::eft::t_bones();
-
-		if (a.base == local.base) continue;
 
 		if (!a.bones[games::eft::Bones::HumanHead].valid() /*|| !a.root_pos.valid()*/) continue;
 
@@ -490,8 +591,10 @@ void esp_eft()
 		float rapport = w2s_bones[games::eft::Bones::HumanRFoot].y - w2s_bones[games::eft::Bones::HumanHead].y;
 		sdk::render::render->DrawBorder(w2s_bones[games::eft::Bones::HumanHead].x - 25 - (rapport / 4), w2s_bones[games::eft::Bones::HumanHead].y, rapport / 2, rapport, 2, 0xff00ff00);
 
-		if (a.is_ai()) sdk::render::render->RenderText(w2s_bones[games::eft::Bones::HumanHead].x, w2s_bones[games::eft::Bones::HumanHead].y - 25, 0xff00ff00, (char*)"AI");
-		else sdk::render::render->RenderText(w2s_bones[games::eft::Bones::HumanHead].x, w2s_bones[games::eft::Bones::HumanHead].y - 25, 0xff00ff00, (char*)"PLAYER");
+		auto dst_to_middle = w2s_bones[games::eft::Bones::HumanHead].dst({ 1920 / 2, 1080 / 2,0 });
+
+		if (a.is_ai()) sdk::render::render->RenderText(w2s_bones[games::eft::Bones::HumanHead].x, w2s_bones[games::eft::Bones::HumanHead].y - 25, 0xff00ff00, (char*)"AI - %f", dst_to_middle);
+		else sdk::render::render->RenderText(w2s_bones[games::eft::Bones::HumanHead].x, w2s_bones[games::eft::Bones::HumanHead].y - 25, 0xff00ff00, (char*)"PLAYER - %f", dst_to_middle);
 
 		//if ((GetAsyncKeyState(VK_LBUTTON) & 1))
 		//{
@@ -539,8 +642,9 @@ void esp_eft()
 	auto ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
 
 	sdk::render::render->RenderText(5, 25, 0xff00ff00, (char*)"graphic driver    execution time: %i", ms_int.count());
-	sdk::render::render->RenderText(5, 55, 0xff00ff00, (char*)"rendered                        : %i", rendered);
-	sdk::render::render->RenderText(5, 85, 0xff00ff00, (char*)"entities                        : %i", p.size());
+	sdk::render::render->RenderText(5, 50, 0xff00ff00, (char*)"rendered                        : %i", rendered);
+	sdk::render::render->RenderText(5, 75, 0xff00ff00, (char*)"entities                        : %i", p.size());
+	sdk::render::render->RenderText(5, 100, 0xff00ff00, (char*)"local                           : %p", local.base);
 }
 
 bool no_recoil = false;
@@ -987,7 +1091,7 @@ int thread(std::promise<void>* shutdown_promise, std::future<void> shutdown)
 				0	-	attatch to eft\n\
 				1	-	dump objects\n\
 				2	-	get gameworld\n\
-				3	-	esp\n\
+				3	-	cheese\n\
 				\n");
 
 			printf("selection: ");
@@ -1040,12 +1144,14 @@ int thread(std::promise<void>* shutdown_promise, std::future<void> shutdown)
 
 				if (!first_timer)
 				{
-					games::eft::c_updater::Instance().setup();
+					//games::eft::c_updater::Instance().setup();
+					games::eft::p_cheese->setup();
 					first_timer = 1;
 				}
 
-				esp_eft_toggle = !esp_eft_toggle;
-				printf("[esp toggled] %i\n", esp_eft_toggle);
+				games::eft::p_cheese->cheese_toggle = !games::eft::p_cheese->cheese_toggle;
+				printf("[cheese] %i\n", games::eft::p_cheese->cheese_toggle);
+
 				system("pause");
 			}
 			break;
@@ -1191,6 +1297,7 @@ int main()
 	render_utils::render = new render_utils::c_render();
 	input::input = new input::c_input();
 	ui::ui = new ui::c_ui();
+	games::eft::p_cheese = new games::eft::c_cheese();
 
 	sdk::render::render = new sdk::render::c_render();
 
@@ -1274,16 +1381,14 @@ int main()
 							}
 							catch (...) {}
 						}
-						if (esp_eft_toggle)
-						{
-							try {
-								esp_eft();
-							}
-							catch (...) {}
+
+						try {
+							games::eft::p_cheese->renderer();
 						}
+						catch (...) {}
 
 						auto fps = duration ? 1000000ull / duration : 9999999ull;
-						sdk::render::render->RenderText(5, 5, 0xff00ff00, (char*)"graphics driver fps: %i", fps);
+						sdk::render::render->RenderText(5, 0, 0xff00ff00, (char*)"graphics driver fps: %i", fps);
 					}
 
 					cum = true;

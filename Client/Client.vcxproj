@@ -176,6 +176,7 @@
     <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
     <ClCompile Include="games\arma3\util_entity.cpp" />
     <ClCompile Include="games\eft\camera.cpp" />
+    <ClCompile Include="games\eft\cheese.cpp" />
     <ClCompile Include="games\eft\game_world.cpp" />
     <ClCompile Include="games\eft\object_utils.cpp" />
     <ClCompile Include="games\eft\player.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
     <ClInclude Include="games\arma3\util_entity.h" />
     <ClInclude Include="games\eft\camera.h" />
+    <ClInclude Include="games\eft\cheese.h" />
     <ClInclude Include="games\eft\game_world.h" />
     <ClInclude Include="games\eft\object_utils.h" />
     <ClInclude Include="games\eft\player.h" />
