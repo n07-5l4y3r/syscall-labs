@@ -576,7 +576,7 @@ namespace offset {
             .byte = 0x5a0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
         // Data           : this+0x5A8, Member, Type: unsigned char[0xF], ImageFileName
         const s_field ImageFileName                                      = {
-            .byte = 0x5a8     , .bytes = 0xff       , .bit = 0x0 , .bits = 0x0  };
+            .byte = 0x5a8     , .bytes = 0xf       , .bit = 0x0 , .bits = 0x0  };
         // Data           : this+0x5B7, Member, Type: unsigned char, PriorityClass
         const s_field PriorityClass                                      = {
             .byte = 0x5b7     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
@@ -1632,9 +1632,9 @@ namespace offset {
     namespace _PUBLIC {
         // PublicSymbol   : ObTypeIndexTable
         const s_field ObTypeIndexTable                                   = {
-            .byte = 0xcfce80  , .bytes = 0x0       , .bit = 0x0 , .bits = 0x0  };
+            .byte = 0xcfbe80  , .bytes = 0x0       , .bit = 0x0 , .bits = 0x0  };
         // PublicSymbol   : ObHeaderCookie
         const s_field ObHeaderCookie                                     = {
-            .byte = 0xcfc72c  , .bytes = 0x0       , .bit = 0x0 , .bits = 0x0  };
+            .byte = 0xcfb72c  , .bytes = 0x0       , .bit = 0x0 , .bits = 0x0  };
     }
 }

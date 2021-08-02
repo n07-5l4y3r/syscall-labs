@@ -12,6 +12,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pdb2header", "pdb2header\pdb2header.vcxproj", "{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{50D68457-A4D1-4187-8E54-3FD5CA141270}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0} = {0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

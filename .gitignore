@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# additions
+ntoskrnl.exe
+win32k.sys
+win32u.dll

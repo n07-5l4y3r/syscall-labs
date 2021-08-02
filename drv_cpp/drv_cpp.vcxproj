@@ -189,9 +189,10 @@
       <DiagnosticsFormat />
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <PreprocessorDefinitions>DRIVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PreBuildEvent>
-      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe C:\Windows\System32\ntoskrnl.exe _KPROCESS _EPROCESS _HANDLE_TABLE _HANDLE_TABLE_ENTRY _OBJECT_HEADER _OBJECT_TYPE ObHeaderCookie ObTypeIndexTable _PEB _PEB_LDR_DATA _LDR_DATA_TABLE_ENTRY &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp</Command>
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _KPROCESS _EPROCESS _HANDLE_TABLE _HANDLE_TABLE_ENTRY _OBJECT_HEADER _OBJECT_TYPE ObHeaderCookie ObTypeIndexTable _PEB _PEB_LDR_DATA _LDR_DATA_TABLE_ENTRY &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -221,6 +222,7 @@
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <ExceptionHandling>false</ExceptionHandling>
+      <PreprocessorDefinitions>DRIVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PreBuildEvent>
       <Command>pdb2header.exe "C:\\Windows\\System32\\ntoskrnl.exe" _KPROCESS _EPROCESS _HANDLE_TABLE _HANDLE_TABLE_ENTRY _OBJECT_HEADER _OBJECT_TYPE ObHeaderCookie ObTypeIndexTable _PEB _PEB_LDR_DATA _LDR_DATA_TABLE_ENTRY &gt; C:\Users\b0nk\Desktop\projects\kernel-labs-master\drv_cpp\offsets\ntoskrnl.exe.cpp</Command>

@@ -23,7 +23,7 @@
     <ProjectGuid>{50D68457-A4D1-4187-8E54-3FD5CA141270}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GlobalDraw</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,6 +128,11 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys KiSystemServiceStart NtGdiFlush &gt; $(ProjectDir)offsets\win32k.sys.cpp
+$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32u.dll NtGdiFlush &gt; $(ProjectDir)offsets\win32u.dll.cpp</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -170,114 +175,21 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys KiSystemServiceStart NtGdiFlush &gt; $(ProjectDir)offsets\win32k.sys.cpp
+$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32u.dll NtGdiFlush &gt; $(ProjectDir)offsets\win32u.dll.cpp</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DD_Overlay\DD_Overlay.cpp" />
-    <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
-    <ClCompile Include="games\arma3\util_entity.cpp" />
-    <ClCompile Include="games\eft\camera.cpp" />
-    <ClCompile Include="games\eft\cheese.cpp" />
-    <ClCompile Include="games\eft\game_world.cpp" />
-    <ClCompile Include="games\eft\object_utils.cpp" />
-    <ClCompile Include="games\eft\player.cpp" />
-    <ClCompile Include="games\eft\unity_transform.cpp" />
-    <ClCompile Include="games\eft\updaters.cpp" />
-    <ClCompile Include="games\thread_util.cpp" />
-    <ClCompile Include="games\vec3.cpp" />
-    <ClCompile Include="GlobalDraw.cpp" />
-    <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
-    <ClCompile Include="ID2D1_Renderer\render.cpp" />
-    <ClCompile Include="ID2D1_Renderer\ui.cpp" />
-    <ClCompile Include="imgui\imgui.cpp" />
-    <ClCompile Include="imgui\imgui_demo.cpp" />
-    <ClCompile Include="imgui\imgui_draw.cpp" />
-    <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="imgui\imgui_tables.cpp" />
-    <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="input\input.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ipc\ipc_master.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1ColorRGBA.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1ColorRGBAInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1DWriteRenderTarget.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1DWriteRenderTargetInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1Factory.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1FactoryInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1FontWrapper.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1FontWrapperInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphAtlas.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphAtlasInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphProvider.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphProviderInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphRenderStates.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphRenderStatesInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphSheet.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphSheetInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphVertexDrawer.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1GlyphVertexDrawerInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1StateSaver.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1TextGeometry.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1TextGeometryInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1TextRenderer.cpp" />
-    <ClCompile Include="rendering\font_wrapper\CFW1TextRendererInterface.cpp" />
-    <ClCompile Include="rendering\font_wrapper\FW1FontWrapper.cpp" />
-    <ClCompile Include="rendering\font_wrapper\FW1Precompiled.cpp" />
-    <ClCompile Include="rendering\rn.cpp" />
-    <ClCompile Include="rendering\shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
-    <ClInclude Include="dinput7.h" />
-    <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
-    <ClInclude Include="games\arma3\util_entity.h" />
-    <ClInclude Include="games\eft\camera.h" />
-    <ClInclude Include="games\eft\cheese.h" />
-    <ClInclude Include="games\eft\game_world.h" />
-    <ClInclude Include="games\eft\object_utils.h" />
-    <ClInclude Include="games\eft\player.h" />
-    <ClInclude Include="games\eft\unity_transform.h" />
-    <ClInclude Include="games\eft\updaters.h" />
-    <ClInclude Include="games\pys_util.h" />
-    <ClInclude Include="games\thread_util.h" />
-    <ClInclude Include="games\vec3.h" />
-    <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
-    <ClInclude Include="ID2D1_Renderer\render.h" />
-    <ClInclude Include="ID2D1_Renderer\ui.h" />
-    <ClInclude Include="imgui\imconfig.h" />
-    <ClInclude Include="imgui\imgui.h" />
-    <ClInclude Include="imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="imgui\imgui_impl_win32.h" />
-    <ClInclude Include="imgui\imgui_internal.h" />
-    <ClInclude Include="imgui\imstb_rectpack.h" />
-    <ClInclude Include="imgui\imstb_textedit.h" />
-    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="inc.hpp" />
-    <ClInclude Include="input\input.h" />
     <ClInclude Include="ipc\ipc_master.h" />
     <ClInclude Include="ipc\ipc_shared.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1ColorRGBA.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1DWriteRenderTarget.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1Factory.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1FontWrapper.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1GlyphAtlas.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1GlyphProvider.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1GlyphRenderStates.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1GlyphSheet.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1GlyphVertexDrawer.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1Object.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1StateSaver.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1TextGeometry.h" />
-    <ClInclude Include="rendering\font_wrapper\CFW1TextRenderer.h" />
-    <ClInclude Include="rendering\font_wrapper\FW1CompileSettings.h" />
-    <ClInclude Include="rendering\font_wrapper\FW1FontWrapper.h" />
-    <ClInclude Include="rendering\font_wrapper\FW1Precompiled.h" />
-    <ClInclude Include="rendering\fx\d3dx11effect.h" />
-    <ClInclude Include="rendering\fx\d3dxGlobal.h" />
-    <ClInclude Include="rendering\rn.h" />
-    <ClInclude Include="rendering\shader.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="rendering\fx\Effects11.lib" />
+    <ClInclude Include="offsets\offset.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

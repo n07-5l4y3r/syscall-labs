@@ -1,5 +1,10 @@
 #pragma once
-#include <cwchar>
+
+#ifndef _WCHAR_T_DEFINED
+typedef unsigned short wchar_t;
+#define _WCHAR_T_DEFINED
+#endif  /* _WCHAR_T_DEFINED */
+
 struct s_mbuffer
 {
 	char m[0x512];
