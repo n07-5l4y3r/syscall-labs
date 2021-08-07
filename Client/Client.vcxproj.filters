@@ -8,6 +8,5 @@
     <ClInclude Include="inc.hpp" />
     <ClInclude Include="ipc\ipc_shared.h" />
     <ClInclude Include="ipc\ipc_master.h" />
-    <ClInclude Include="offsets\offset.h" />
   </ItemGroup>
 </Project>

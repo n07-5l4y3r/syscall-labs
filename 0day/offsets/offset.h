@@ -47,4 +47,14 @@ namespace offset {
 		return true;
 	}
 
+	namespace _TEB
+	{
+		extern const s_field GdiBatchCount;
+	}
+	
+	namespace _PUBLIC
+	{
+		extern const s_field NtGdiEngTransparentBlt;
+	}
+
 }

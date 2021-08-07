@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{50D68457-A4D1-4187-8E54-3FD5CA141270}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GlobalDraw</RootNamespace>
+    <ProjectGuid>{e677f5b0-883d-4e33-8f67-8da230587e47}</ProjectGuid>
+    <RootNamespace>My0day</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -51,7 +51,6 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <SpectreMitigation>false</SpectreMitigation>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -73,34 +72,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(DXSDK_DIR)Include;$(ProjectDir);$(IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x64;$(WindowsSDK_LibraryPath_x64);C:\Users\b0nk\Desktop\projects\kernel-labs-master\Client\rendering\fx;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>$(ExternalIncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -112,31 +95,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -152,41 +112,57 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ipc\ipc_master.cpp" />
+    <ClCompile Include="..\kdmapper\kdmapper\intel_driver.cpp" />
+    <ClCompile Include="..\kdmapper\kdmapper\service.cpp" />
+    <ClCompile Include="..\kdmapper\kdmapper\utils.cpp" />
+    <ClCompile Include="0day.cpp" />
+    <ClCompile Include="offsets\ntoskrnl.exe.cpp" />
+    <ClCompile Include="offsets\win32k.sys.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc.hpp" />
-    <ClInclude Include="ipc\ipc_master.h" />
-    <ClInclude Include="ipc\ipc_shared.h" />
+    <ClInclude Include="offsets\offset.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

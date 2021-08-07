@@ -18,6 +18,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdmapper", "kdmapper\kdmapper\kdmapper.vcxproj", "{518E0636-BA8F-459D-ACAC-81BD33475E3E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "0day", "0day\0day.vcxproj", "{E677F5B0-883D-4E33-8F67-8DA230587E47}"
+	ProjectSection(ProjectDependencies) = postProject
+		{518E0636-BA8F-459D-ACAC-81BD33475E3E} = {518E0636-BA8F-459D-ACAC-81BD33475E3E}
+		{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0} = {0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +66,14 @@ Global
 		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Release|x64.ActiveCfg = Release|x64
 		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Release|x64.Build.0 = Release|x64
 		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Release|x86.ActiveCfg = Release|x64
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Debug|x64.ActiveCfg = Debug|x64
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Debug|x64.Build.0 = Debug|x64
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Debug|x86.ActiveCfg = Debug|Win32
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Debug|x86.Build.0 = Debug|Win32
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Release|x64.ActiveCfg = Release|x64
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Release|x64.Build.0 = Release|x64
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Release|x86.ActiveCfg = Release|Win32
+		{E677F5B0-883D-4E33-8F67-8DA230587E47}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
