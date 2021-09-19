@@ -78,9 +78,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)bin\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)bin\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -127,7 +135,7 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
 $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -149,7 +157,7 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
 $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -158,11 +166,17 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
     <ClCompile Include="..\kdmapper\kdmapper\service.cpp" />
     <ClCompile Include="..\kdmapper\kdmapper\utils.cpp" />
     <ClCompile Include="0day.cpp" />
+    <ClCompile Include="offsets\handwritten.cpp" />
     <ClCompile Include="offsets\ntoskrnl.exe.cpp" />
     <ClCompile Include="offsets\win32k.sys.cpp" />
+    <ClCompile Include="phys_mem\phys_mem.cpp" />
+    <ClCompile Include="ring0_exec\ring0_exec.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="offsets\offset.h" />
+    <ClInclude Include="inc.h" />
+    <ClInclude Include="phys_mem\phys_mem.h" />
+    <ClInclude Include="ring0_exec\ring0_exec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

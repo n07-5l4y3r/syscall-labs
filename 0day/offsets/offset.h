@@ -51,10 +51,27 @@ namespace offset {
 	{
 		extern const s_field GdiBatchCount;
 	}
+
+	namespace _EPROCESS
+	{
+		extern const s_field Pcb;
+	}
+
+	namespace _KPROCESS
+	{
+		extern const s_field DirectoryTableBase;
+	}
 	
 	namespace _PUBLIC
 	{
 		extern const s_field NtGdiEngTransparentBlt;
+	}
+
+	namespace _HANDWRITTEN
+	{
+		extern const s_field NtGdiEngTransparentBlt_SyscallID;
+		extern const s_field NtGdiEngTransparentBlt_RipGate;
+		extern const s_field NtGdiEngTransparentBlt_Rip;
 	}
 
 }

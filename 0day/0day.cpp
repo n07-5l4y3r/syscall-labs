@@ -1,205 +1,52 @@
-#include "../kdmapper/kdmapper/intel_driver.hpp"
-#include "offsets/offset.h"
-
-namespace offset
-{
-	namespace _HANDWRITTEN
-	{
-		// mov  r10, rcx				; 0x3			; 49 89 ca
-		// mov  eax, <DWORD>			; 0x1			; b8 <DWORD>
-		const s_field NtGdiEngTransparentBlt_SyscallID = { .byte = 0x3 + 0x1, .bytes = 0x4, .bit = 0x0 , .bits = 0x0 };
-		// rex  push rbx				; 0x2			; 40 53
-		// sub  rsp, 0x50				; 0x4			; 48 83 ec 50
-		// mov  rax, [rip + <DWORD>]	; 0x3			; 48 8b 05 <DWORD>
-		const s_field NtGdiEngTransparentBlt_RipGate = { .byte = 0x2 + 0x4 + 0x3, .bytes = 0x4, .bit = 0x0 , .bits = 0x0 };
-		// rex  push rbx				; 0x2			; 40 53
-		// sub  rsp, 0x50				; 0x4			; 48 83 ec 50
-		// mov  rax, [rip + 0x5aff7]	; 0x3 + 0x4		; 48 8b 05 f7 af 05 00
-		// RIP:
-		const s_field NtGdiEngTransparentBlt_Rip = { .byte = 0x2 + 0x4 + 0x3 + 0x4, .bytes = 0x0, .bit = 0x0 , .bits = 0x0 };
-	}
-}
-
-unsigned char R0_Callgate_Buf[] =
-{
-	/* 0*/ 0x48, 0xB8, 0x37, 0x13, 0x37, 0x13, 0x37, 0x13, 0x37, 0x13,	// movabs rax,0x1337133713371337
-	/*10*/ 0x48, 0x39, 0xC1,											// cmp    rcx,rax
-	/*13*/ 0x74, 0x0C,													// je     +12 <is_hooked_thread>	// 15 + 12 = 27
-	/*15*/ 0x48, 0xB8, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11,	// movabs rax,0x1122334455667788
-	/*25*/ 0xFF, 0xE0,													// jmp    rax
-	/*27*/																// <is_hooked_thread>:
-	/*27*/ 0x48, 0xB8, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11,	// movabs rax,0x1122334455667788
-	/*37*/ 0xFF, 0xE0													// jmp    rax
-};
-constexpr unsigned R0_Callgate_Orig = 15 + 2;
-constexpr unsigned R0_Callgate_Hook = 27 + 2;
-unsigned char R0_Hook_Buf[] =
-{
-	/*0xCC,										// int 3*/
-	0x48, 0xC7, 0xC0, 0xA4, 0x01, 0x00, 0x00,	// mov    rax, 420
-	0xC3										// ret
-};
+#include <inc.h>
 
 int main(const int argc, char* argv[])
 {
-	if (argc == 1337)
-		MessageBoxA(nullptr, "world", "hello", MB_OK);
+	if (argc >= 2)
+		MessageBoxA(0, "I just force win32u", "Bye!", MB_OK);
 	
-	const auto pid = GetCurrentProcessId();
-	printf("   PID = %lx" "\n", pid);
-	if (!pid) return 0;
-
-	const auto win32u = GetModuleHandleA("win32u.dll");
-	printf("R3 win32u = %p" "\n", win32u);
-	if (!win32u) return 0;
-
-	const auto NtGdiEngTransparentBlt = static_cast<void*>(GetProcAddress(win32u, "NtGdiEngTransparentBlt"));
-	printf("R3 NtGdiEngTransparentBlt = %p" "\n", NtGdiEngTransparentBlt);
-	if (!NtGdiEngTransparentBlt) return 0;
+	const auto hDev = intel_driver::Load();
+	const auto gate = new ring0_exec(
+		&GetModuleHandleA,
+		&GetProcAddress,
+		hDev,
+		&utils::GetKernelModuleAddress,
+		&intel_driver::GetKernelModuleExport,
+		&intel_driver::ReadMemory,
+		&intel_driver::WriteMemory,
+		&intel_driver::AllocatePool);
+	intel_driver::Unload(hDev);
+	const auto phys = new phys_mem(gate);
 	
-	const auto SyscallID = *static_cast<PDWORD>(ptr_field(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_SyscallID, NtGdiEngTransparentBlt));
-	printf("R3 SyscallID = %lx" "\n", SyscallID);
-	if (!SyscallID) return 0;
-
-	// Find win32k.sys Modul-Base
-	const auto win32k = reinterpret_cast<void*>(utils::GetKernelModuleAddress("win32k.sys"));
-	printf("R0 win32k = %p" "\n", win32k);
-	if (!win32k) return 0;
-
-	// Calculate NtGdiEngTransparentBlt Address
-	const auto R0_NtBlt = ptr_field(offset::_PUBLIC::NtGdiEngTransparentBlt, win32k);
-	printf("R0 NtGdiEngTransparentBlt = %p" "\n", R0_NtBlt);
-	if (!R0_NtBlt) return 0;
-
-	// Calculate Callgate-Address-Calculation-RIP
-	const auto R0_NtGdiEngTransparentBlt_RIP = adr_field(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_Rip, R0_NtBlt);
-	printf("R0 NtGdiEngTransparentBlt RIP = %llx" "\n", R0_NtGdiEngTransparentBlt_RIP);
-	if (!R0_NtGdiEngTransparentBlt_RIP) return 0;
-
-	// Calculate Callgate RIP Offset-Pointer
-	const auto R0_NtBlt_RIP_GATE_OFFSET_PTR = adr_field(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_RipGate, R0_NtBlt);
-	printf("R0 NtGdiEngTransparentBlt RIP GATE OFFSET PTR = %llx" "\n", R0_NtBlt_RIP_GATE_OFFSET_PTR);
-	if (!R0_NtBlt_RIP_GATE_OFFSET_PTR) return 0;
-
-	printf(" > Load Intel Driver" "\n");
+	const auto this_cr3 = phys->GetCR3ByPID(GetCurrentProcessId());
+	PRINTVAR(this_cr3, "%llx");
 	
-	const HANDLE hDev = intel_driver::Load();
-	printf("   hDev = %p" "\n", hDev);
-	if (!hDev || hDev == INVALID_HANDLE_VALUE) return 0;
+	const auto VA_1337 = VirtualAlloc(NULL, 0x1000, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	memcpy(VA_1337, "1337\0", 5);
+	const auto VA_420 = VirtualAlloc(NULL, 0x1000, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	memcpy(VA_420, "420\0", 4);
 
-	const auto Unload = [](const HANDLE hDrv) -> int
-	{
-		intel_driver::Unload(hDrv);
-		return 0;
-	};
+	auto begin = std::chrono::high_resolution_clock::now();
+	const auto PA_1337 = phys->VA_2_PA(this_cr3, reinterpret_cast<ULONG64>(VA_1337));
+	auto end = std::chrono::high_resolution_clock::now();
+	std::cout << "Translate took: " << std::chrono::nanoseconds(end - begin).count() << " ns" << std::endl;
 
-	printf(" > Readback Callgate RIP Offset" "\n");
-
-	// Readback Callgate RIP Offset
-	uint64_t R0_NtBlt_RIP_GATE_OFFSET = 0x0;
-	intel_driver::ReadMemory(hDev,
-		R0_NtBlt_RIP_GATE_OFFSET_PTR,
-		static_cast<void*>(&R0_NtBlt_RIP_GATE_OFFSET),
-		min(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_RipGate.bytes, sizeof(R0_NtBlt_RIP_GATE_OFFSET)));
-	printf("R0 NtGdiEngTransparentBlt RIP GATE OFFSET = %llx" "\n", R0_NtBlt_RIP_GATE_OFFSET);
-	if (!R0_NtBlt_RIP_GATE_OFFSET) return Unload(hDev);
-
-	// Calculate Callgate-Pointer Address
-	const auto R0_NtBlt_RIP_GATE_PTR = R0_NtGdiEngTransparentBlt_RIP + R0_NtBlt_RIP_GATE_OFFSET;
-	printf("R0 NtGdiEngTransparentBlt RIP GATE PTR = %llx" "\n", R0_NtBlt_RIP_GATE_PTR);
-	if (!R0_NtBlt_RIP_GATE_PTR) return Unload(hDev);
-
-	printf(" > Readback Callgate Pointer" "\n");
+	begin = std::chrono::high_resolution_clock::now();
+	const auto PA_420 = phys->VA_2_PA(this_cr3, reinterpret_cast<ULONG64>(VA_420));
+	end = std::chrono::high_resolution_clock::now();
+	std::cout << "Translate took: " << std::chrono::nanoseconds(end - begin).count() << " ns" << std::endl;
 	
-	// Readback Callgate-Pointer
-	uint64_t R0_NtBlt_RIP_GATE = 0x0;
-	intel_driver::ReadMemory(hDev,
-		R0_NtBlt_RIP_GATE_PTR,
-		static_cast<void*>(&R0_NtBlt_RIP_GATE),
-		sizeof(R0_NtBlt_RIP_GATE));
-	printf("R0 NtGdiEngTransparentBlt RIP GATE = %llx" "\n", R0_NtBlt_RIP_GATE);
-	if (!R0_NtBlt_RIP_GATE) return Unload(hDev);
+	PRINTVAR(VA_1337, "%s");
+	PRINTVAR(VA_420, "%s");
+
+	begin = std::chrono::high_resolution_clock::now();
+	phys->MEM_CPY(PA_1337, PA_420, 4);
+	end = std::chrono::high_resolution_clock::now();
+	std::cout << "Copy took: " << std::chrono::nanoseconds(end - begin).count() << " ns" << std::endl;
 	
-	printf(" > Allocate Shellcode" "\n");
+	PRINTVAR(VA_1337, "%s");
+	PRINTVAR(VA_420, "%s");
 	
-	// Allocate Kernel-Memory
-	auto R0_Callgate_PTR = intel_driver::AllocatePool(hDev,
-		nt::POOL_TYPE::NonPagedPool,
-		sizeof(R0_Callgate_Buf) + sizeof(R0_Hook_Buf));
-	if (!R0_Callgate_PTR) return Unload(hDev);
-	auto R0_Hook_PTR = R0_Callgate_PTR + sizeof(R0_Callgate_Buf);
-	printf("R0 Trampolin-Shellcode PTR = %llx" "\n", R0_Callgate_PTR);
-	printf("R0 Hook-Shellcode PTR = %llx" "\n", R0_Hook_PTR);
-
-	printf(" > Write Hook Shellcode" "\n");
-	// Write Hook-Shellcode to allocated Kernel-Memory
-	if (!intel_driver::WriteMemory(hDev,
-		R0_Hook_PTR,
-		R0_Hook_Buf,
-		sizeof(R0_Hook_Buf))) return Unload(hDev);
-
-	// Edit Shellcode
-	memcpy(&R0_Callgate_Buf[R0_Callgate_Orig], &R0_NtBlt_RIP_GATE, sizeof(R0_NtBlt_RIP_GATE));
-	memcpy(&R0_Callgate_Buf[R0_Callgate_Hook], &R0_Hook_PTR, sizeof(R0_Hook_PTR));
-
-	printf(" > Write Trampolin-Shellcode" "\n");
-	// Write Shellcode to allocated Kernel-Memory
-	if (!intel_driver::WriteMemory(hDev,
-		R0_Callgate_PTR,
-		R0_Callgate_Buf,
-		sizeof(R0_Callgate_Buf))) return Unload(hDev);
-
-	printf(" > Overwrite Gate Pointer" "\n");
-	
-	// Overwrite Callgate-Pointer with Shellcode-Address
-	if (!intel_driver::WriteToReadOnlyMemory(hDev,
-		R0_NtBlt_RIP_GATE_PTR,
-		static_cast<void*>(&R0_Callgate_PTR),
-		sizeof(uint64_t))) return Unload(hDev);
-
-	//const auto teb = NtCurrentTeb();
-	//printf("R3 teb = %p" "\n", teb);
-	//if (!teb) return 0;
-	//const auto GdiBatchCount = ptr_field(offset::_TEB::GdiBatchCount, teb);
-	//printf("R3 GdiBatchCount = %p" "\n", GdiBatchCount);
-	//if (!GdiBatchCount) return 0;
-	//if (const auto p = static_cast<unsigned int*>(GdiBatchCount); (*p) == 0)
-	//{
-	//	(*p) = 1337;
-	//	//call
-	//	(*p) = 0;
-	//}
-	printf(" > Call GDI-Syscall (Hooked)" "\n");
-	printf(" + RETVAL: %llu" "\n", static_cast<int64_t(*)(
-		int64_t _rcx, int64_t _rdx, int64_t _r8, int64_t _r9,
-		int64_t _ebp_16, int64_t _ebp_24,
-		int32_t _ebp_32, int32_t _ebp_36)>(NtGdiEngTransparentBlt)(
-			0x1337133713371337, 2, 3, 4,
-			5, 6,
-			7, 8));
-
-	printf(" > Call GDI-Syscall (Without Hook)" "\n");
-	auto retval = 
-	printf(" + RETVAL: %llu" "\n", static_cast<int64_t(*)(
-		int64_t _rcx, int64_t _rdx, int64_t _r8, int64_t _r9,
-		int64_t _ebp_16, int64_t _ebp_24,
-		int32_t _ebp_32, int32_t _ebp_36)>(NtGdiEngTransparentBlt)(
-			1, 2, 3, 4,
-			5, 6,
-			7, 8));
-
-	printf(" > Reset Gate Pointer" "\n");
-
-	// Overwrite Callgate-Pointer with Original-Address
-	if (!intel_driver::WriteToReadOnlyMemory(hDev,
-		R0_NtBlt_RIP_GATE_PTR,
-		static_cast<void*>(&R0_NtBlt_RIP_GATE),
-		sizeof(uint64_t))) return Unload(hDev);
-
-	printf(" > Free Shellcode" "\n");
-	
-	if (!intel_driver::FreePool(hDev, R0_Callgate_PTR))
-		return Unload(hDev);
-
-	return Unload(hDev);
+	delete phys;
+	delete gate;
 }

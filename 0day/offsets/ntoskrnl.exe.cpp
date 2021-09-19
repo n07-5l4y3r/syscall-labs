@@ -383,6 +383,871 @@ namespace offset {
         const s_field EffectiveContainerId                               = {
             .byte = 0x1828    , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
     }
+    namespace _KPROCESS {
+        // Data           : this+0x0, Member, Type: struct _DISPATCHER_HEADER, Header
+        const s_field Header                                             = {
+            .byte = 0x0       , .bytes = 0x18      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x18, Member, Type: struct _LIST_ENTRY, ProfileListHead
+        const s_field ProfileListHead                                    = {
+            .byte = 0x18      , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x28, Member, Type: unsigned __int64, DirectoryTableBase
+        const s_field DirectoryTableBase                                 = {
+            .byte = 0x28      , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x30, Member, Type: struct _LIST_ENTRY, ThreadListHead
+        const s_field ThreadListHead                                     = {
+            .byte = 0x30      , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x40, Member, Type: unsigned long, ProcessLock
+        const s_field ProcessLock                                        = {
+            .byte = 0x40      , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x44, Member, Type: unsigned long, ProcessTimerDelay
+        const s_field ProcessTimerDelay                                  = {
+            .byte = 0x44      , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x48, Member, Type: unsigned __int64, DeepFreezeStartTime
+        const s_field DeepFreezeStartTime                                = {
+            .byte = 0x48      , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x50, Member, Type: struct _KAFFINITY_EX, Affinity
+        const s_field Affinity                                           = {
+            .byte = 0x50      , .bytes = 0xa8      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0xF8, Member, Type: unsigned __int64[0xC], AffinityPadding
+        const s_field AffinityPadding                                    = {
+            .byte = 0xf8      , .bytes = 0x60      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x158, Member, Type: struct _LIST_ENTRY, ReadyListHead
+        const s_field ReadyListHead                                      = {
+            .byte = 0x158     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x168, Member, Type: struct _SINGLE_LIST_ENTRY, SwapListEntry
+        const s_field SwapListEntry                                      = {
+            .byte = 0x168     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x170, Member, Type: volatile struct _KAFFINITY_EX, ActiveProcessors
+        const s_field ActiveProcessors                                   = {
+            .byte = 0x170     , .bytes = 0xa8      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x218, Member, Type: unsigned __int64[0xC], ActiveProcessorsPadding
+        const s_field ActiveProcessorsPadding                            = {
+            .byte = 0x218     , .bytes = 0x60      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this(bf)+0x278:0x0 len(0x1), Member, Type: unsigned long, AutoAlignment
+        const s_field AutoAlignment                                      = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0x1 len(0x1), Member, Type: unsigned long, DisableBoost
+        const s_field DisableBoost                                       = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0x2 len(0x1), Member, Type: unsigned long, DisableQuantum
+        const s_field DisableQuantum                                     = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0x3 len(0x1), Member, Type: unsigned long, DeepFreeze
+        const s_field DeepFreeze                                         = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0x4 len(0x1), Member, Type: unsigned long, TimerVirtualization
+        const s_field TimerVirtualization                                = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0x5 len(0x1), Member, Type: unsigned long, CheckStackExtents
+        const s_field CheckStackExtents                                  = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x5 , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0x6 len(0x1), Member, Type: unsigned long, CacheIsolationEnabled
+        const s_field CacheIsolationEnabled                              = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x6 , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0x7 len(0x3), Member, Type: unsigned long, PpmPolicy
+        const s_field PpmPolicy                                          = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x7 , .bits = 0x3  };
+        // Data           : this(bf)+0x278:0xA len(0x1), Member, Type: unsigned long, VaSpaceDeleted
+        const s_field VaSpaceDeleted                                     = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0xa , .bits = 0x1  };
+        // Data           : this(bf)+0x278:0xB len(0x15), Member, Type: unsigned long, ReservedFlags
+        const s_field ReservedFlags                                      = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0xb , .bits = 0x15 };
+        // Data           : this+0x278, Member, Type: volatile long, ProcessFlags
+        const s_field ProcessFlags                                       = {
+            .byte = 0x278     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x27C, Member, Type: unsigned long, ActiveGroupsMask
+        const s_field ActiveGroupsMask                                   = {
+            .byte = 0x27c     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x280, Member, Type: char, BasePriority
+        const s_field BasePriority                                       = {
+            .byte = 0x280     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x281, Member, Type: char, QuantumReset
+        const s_field QuantumReset                                       = {
+            .byte = 0x281     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x282, Member, Type: char, Visited
+        const s_field Visited                                            = {
+            .byte = 0x282     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x283, Member, Type: union _KEXECUTE_OPTIONS, Flags
+        const s_field Flags                                              = {
+            .byte = 0x283     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x284, Member, Type: unsigned short[0x14], ThreadSeed
+        const s_field ThreadSeed                                         = {
+            .byte = 0x284     , .bytes = 0x28      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x2AC, Member, Type: unsigned short[0xC], ThreadSeedPadding
+        const s_field ThreadSeedPadding                                  = {
+            .byte = 0x2ac     , .bytes = 0x18      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x2C4, Member, Type: unsigned short[0x14], IdealProcessor
+        const s_field IdealProcessor                                     = {
+            .byte = 0x2c4     , .bytes = 0x28      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x2EC, Member, Type: unsigned short[0xC], IdealProcessorPadding
+        const s_field IdealProcessorPadding                              = {
+            .byte = 0x2ec     , .bytes = 0x18      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x304, Member, Type: unsigned short[0x14], IdealNode
+        const s_field IdealNode                                          = {
+            .byte = 0x304     , .bytes = 0x28      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x32C, Member, Type: unsigned short[0xC], IdealNodePadding
+        const s_field IdealNodePadding                                   = {
+            .byte = 0x32c     , .bytes = 0x18      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x344, Member, Type: unsigned short, IdealGlobalNode
+        const s_field IdealGlobalNode                                    = {
+            .byte = 0x344     , .bytes = 0x2       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x346, Member, Type: unsigned short, Spare1
+        const s_field Spare1                                             = {
+            .byte = 0x346     , .bytes = 0x2       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x348, Member, Type: volatile union _KSTACK_COUNT, StackCount
+        const s_field StackCount                                         = {
+            .byte = 0x348     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x350, Member, Type: struct _LIST_ENTRY, ProcessListEntry
+        const s_field ProcessListEntry                                   = {
+            .byte = 0x350     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x360, Member, Type: unsigned __int64, CycleTime
+        const s_field CycleTime                                          = {
+            .byte = 0x360     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x368, Member, Type: unsigned __int64, ContextSwitches
+        const s_field ContextSwitches                                    = {
+            .byte = 0x368     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x370, Member, Type: struct _KSCHEDULING_GROUP *, SchedulingGroup
+        const s_field SchedulingGroup                                    = {
+            .byte = 0x370     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x378, Member, Type: unsigned long, FreezeCount
+        const s_field FreezeCount                                        = {
+            .byte = 0x378     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x37C, Member, Type: unsigned long, KernelTime
+        const s_field KernelTime                                         = {
+            .byte = 0x37c     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x380, Member, Type: unsigned long, UserTime
+        const s_field UserTime                                           = {
+            .byte = 0x380     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x384, Member, Type: unsigned long, ReadyTime
+        const s_field ReadyTime                                          = {
+            .byte = 0x384     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x388, Member, Type: unsigned __int64, UserDirectoryTableBase
+        const s_field UserDirectoryTableBase                             = {
+            .byte = 0x388     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x390, Member, Type: unsigned char, AddressPolicy
+        const s_field AddressPolicy                                      = {
+            .byte = 0x390     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x391, Member, Type: unsigned char[0x47], Spare2
+        const s_field Spare2                                             = {
+            .byte = 0x391     , .bytes = 0x47      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x3D8, Member, Type: void *, InstrumentationCallback
+        const s_field InstrumentationCallback                            = {
+            .byte = 0x3d8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x3E0, Member, Type: union <anonymous-tag>, SecureState
+        const s_field SecureState                                        = {
+            .byte = 0x3e0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x3E8, Member, Type: unsigned __int64, KernelWaitTime
+        const s_field KernelWaitTime                                     = {
+            .byte = 0x3e8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x3F0, Member, Type: unsigned __int64, UserWaitTime
+        const s_field UserWaitTime                                       = {
+            .byte = 0x3f0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x3F8, Member, Type: unsigned __int64[0x8], EndPadding
+        const s_field EndPadding                                         = {
+            .byte = 0x3f8     , .bytes = 0x40      , .bit = 0x0 , .bits = 0x0  };
+    }
+    namespace _EPROCESS {
+        // Data           : this+0x0, Member, Type: struct _KPROCESS, Pcb
+        const s_field Pcb                                                = {
+            .byte = 0x0       , .bytes = 0x438     , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x438, Member, Type: struct _EX_PUSH_LOCK, ProcessLock
+        const s_field ProcessLock                                        = {
+            .byte = 0x438     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x440, Member, Type: void *, UniqueProcessId
+        const s_field UniqueProcessId                                    = {
+            .byte = 0x440     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x448, Member, Type: struct _LIST_ENTRY, ActiveProcessLinks
+        const s_field ActiveProcessLinks                                 = {
+            .byte = 0x448     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x458, Member, Type: struct _EX_RUNDOWN_REF, RundownProtect
+        const s_field RundownProtect                                     = {
+            .byte = 0x458     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x460, Member, Type: unsigned long, Flags2
+        const s_field Flags2                                             = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this(bf)+0x460:0x0 len(0x1), Member, Type: unsigned long, JobNotReallyActive
+        const s_field JobNotReallyActive                                 = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x1 len(0x1), Member, Type: unsigned long, AccountingFolded
+        const s_field AccountingFolded                                   = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x2 len(0x1), Member, Type: unsigned long, NewProcessReported
+        const s_field NewProcessReported                                 = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x3 len(0x1), Member, Type: unsigned long, ExitProcessReported
+        const s_field ExitProcessReported                                = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x4 len(0x1), Member, Type: unsigned long, ReportCommitChanges
+        const s_field ReportCommitChanges                                = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x5 len(0x1), Member, Type: unsigned long, LastReportMemory
+        const s_field LastReportMemory                                   = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x5 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x6 len(0x1), Member, Type: unsigned long, ForceWakeCharge
+        const s_field ForceWakeCharge                                    = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x6 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x7 len(0x1), Member, Type: unsigned long, CrossSessionCreate
+        const s_field CrossSessionCreate                                 = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x7 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x8 len(0x1), Member, Type: unsigned long, NeedsHandleRundown
+        const s_field NeedsHandleRundown                                 = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x8 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x9 len(0x1), Member, Type: unsigned long, RefTraceEnabled
+        const s_field RefTraceEnabled                                    = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x9 , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0xA len(0x1), Member, Type: unsigned long, PicoCreated
+        const s_field PicoCreated                                        = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0xa , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0xB len(0x1), Member, Type: unsigned long, EmptyJobEvaluated
+        const s_field EmptyJobEvaluated                                  = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0xb , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0xC len(0x3), Member, Type: unsigned long, DefaultPagePriority
+        const s_field DefaultPagePriority                                = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0xc , .bits = 0x3  };
+        // Data           : this(bf)+0x460:0xF len(0x1), Member, Type: unsigned long, PrimaryTokenFrozen
+        const s_field PrimaryTokenFrozen                                 = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0xf , .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x10 len(0x1), Member, Type: unsigned long, ProcessVerifierTarget
+        const s_field ProcessVerifierTarget                              = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x10, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x11 len(0x1), Member, Type: unsigned long, RestrictSetThreadContext
+        const s_field RestrictSetThreadContext                           = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x11, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x12 len(0x1), Member, Type: unsigned long, AffinityPermanent
+        const s_field AffinityPermanent                                  = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x12, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x13 len(0x1), Member, Type: unsigned long, AffinityUpdateEnable
+        const s_field AffinityUpdateEnable                               = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x13, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x14 len(0x1), Member, Type: unsigned long, PropagateNode
+        const s_field PropagateNode                                      = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x14, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x15 len(0x1), Member, Type: unsigned long, ExplicitAffinity
+        const s_field ExplicitAffinity                                   = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x15, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x16 len(0x2), Member, Type: unsigned long, ProcessExecutionState
+        const s_field ProcessExecutionState                              = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x16, .bits = 0x2  };
+        // Data           : this(bf)+0x460:0x18 len(0x1), Member, Type: unsigned long, EnableReadVmLogging
+        const s_field EnableReadVmLogging                                = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x18, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x19 len(0x1), Member, Type: unsigned long, EnableWriteVmLogging
+        const s_field EnableWriteVmLogging                               = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x19, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x1A len(0x1), Member, Type: unsigned long, FatalAccessTerminationRequested
+        const s_field FatalAccessTerminationRequested                    = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x1a, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x1B len(0x1), Member, Type: unsigned long, DisableSystemAllowedCpuSet
+        const s_field DisableSystemAllowedCpuSet                         = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x1b, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x1C len(0x2), Member, Type: unsigned long, ProcessStateChangeRequest
+        const s_field ProcessStateChangeRequest                          = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x1c, .bits = 0x2  };
+        // Data           : this(bf)+0x460:0x1E len(0x1), Member, Type: unsigned long, ProcessStateChangeInProgress
+        const s_field ProcessStateChangeInProgress                       = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x1e, .bits = 0x1  };
+        // Data           : this(bf)+0x460:0x1F len(0x1), Member, Type: unsigned long, InPrivate
+        const s_field InPrivate                                          = {
+            .byte = 0x460     , .bytes = 0x4       , .bit = 0x1f, .bits = 0x1  };
+        // Data           : this+0x464, Member, Type: unsigned long, Flags
+        const s_field Flags                                              = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this(bf)+0x464:0x0 len(0x1), Member, Type: unsigned long, CreateReported
+        const s_field CreateReported                                     = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x1 len(0x1), Member, Type: unsigned long, NoDebugInherit
+        const s_field NoDebugInherit                                     = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x2 len(0x1), Member, Type: unsigned long, ProcessExiting
+        const s_field ProcessExiting                                     = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x3 len(0x1), Member, Type: unsigned long, ProcessDelete
+        const s_field ProcessDelete                                      = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x4 len(0x1), Member, Type: unsigned long, ManageExecutableMemoryWrites
+        const s_field ManageExecutableMemoryWrites                       = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x5 len(0x1), Member, Type: unsigned long, VmDeleted
+        const s_field VmDeleted                                          = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x5 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x6 len(0x1), Member, Type: unsigned long, OutswapEnabled
+        const s_field OutswapEnabled                                     = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x6 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x7 len(0x1), Member, Type: unsigned long, Outswapped
+        const s_field Outswapped                                         = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x7 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x8 len(0x1), Member, Type: unsigned long, FailFastOnCommitFail
+        const s_field FailFastOnCommitFail                               = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x8 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x9 len(0x1), Member, Type: unsigned long, Wow64VaSpace4Gb
+        const s_field Wow64VaSpace4Gb                                    = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x9 , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0xA len(0x2), Member, Type: unsigned long, AddressSpaceInitialized
+        const s_field AddressSpaceInitialized                            = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0xa , .bits = 0x2  };
+        // Data           : this(bf)+0x464:0xC len(0x1), Member, Type: unsigned long, SetTimerResolution
+        const s_field SetTimerResolution                                 = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0xc , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0xD len(0x1), Member, Type: unsigned long, BreakOnTermination
+        const s_field BreakOnTermination                                 = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0xd , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0xE len(0x1), Member, Type: unsigned long, DeprioritizeViews
+        const s_field DeprioritizeViews                                  = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0xe , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0xF len(0x1), Member, Type: unsigned long, WriteWatch
+        const s_field WriteWatch                                         = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0xf , .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x10 len(0x1), Member, Type: unsigned long, ProcessInSession
+        const s_field ProcessInSession                                   = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x10, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x11 len(0x1), Member, Type: unsigned long, OverrideAddressSpace
+        const s_field OverrideAddressSpace                               = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x11, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x12 len(0x1), Member, Type: unsigned long, HasAddressSpace
+        const s_field HasAddressSpace                                    = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x12, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x13 len(0x1), Member, Type: unsigned long, LaunchPrefetched
+        const s_field LaunchPrefetched                                   = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x13, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x14 len(0x1), Member, Type: unsigned long, Background
+        const s_field Background                                         = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x14, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x15 len(0x1), Member, Type: unsigned long, VmTopDown
+        const s_field VmTopDown                                          = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x15, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x16 len(0x1), Member, Type: unsigned long, ImageNotifyDone
+        const s_field ImageNotifyDone                                    = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x16, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x17 len(0x1), Member, Type: unsigned long, PdeUpdateNeeded
+        const s_field PdeUpdateNeeded                                    = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x17, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x18 len(0x1), Member, Type: unsigned long, VdmAllowed
+        const s_field VdmAllowed                                         = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x18, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x19 len(0x1), Member, Type: unsigned long, ProcessRundown
+        const s_field ProcessRundown                                     = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x19, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x1A len(0x1), Member, Type: unsigned long, ProcessInserted
+        const s_field ProcessInserted                                    = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x1a, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x1B len(0x3), Member, Type: unsigned long, DefaultIoPriority
+        const s_field DefaultIoPriority                                  = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x1b, .bits = 0x3  };
+        // Data           : this(bf)+0x464:0x1E len(0x1), Member, Type: unsigned long, ProcessSelfDelete
+        const s_field ProcessSelfDelete                                  = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x1e, .bits = 0x1  };
+        // Data           : this(bf)+0x464:0x1F len(0x1), Member, Type: unsigned long, SetTimerResolutionLink
+        const s_field SetTimerResolutionLink                             = {
+            .byte = 0x464     , .bytes = 0x4       , .bit = 0x1f, .bits = 0x1  };
+        // Data           : this+0x468, Member, Type: union _LARGE_INTEGER, CreateTime
+        const s_field CreateTime                                         = {
+            .byte = 0x468     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x470, Member, Type: unsigned __int64[0x2], ProcessQuotaUsage
+        const s_field ProcessQuotaUsage                                  = {
+            .byte = 0x470     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x480, Member, Type: unsigned __int64[0x2], ProcessQuotaPeak
+        const s_field ProcessQuotaPeak                                   = {
+            .byte = 0x480     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x490, Member, Type: unsigned __int64, PeakVirtualSize
+        const s_field PeakVirtualSize                                    = {
+            .byte = 0x490     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x498, Member, Type: unsigned __int64, VirtualSize
+        const s_field VirtualSize                                        = {
+            .byte = 0x498     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4A0, Member, Type: struct _LIST_ENTRY, SessionProcessLinks
+        const s_field SessionProcessLinks                                = {
+            .byte = 0x4a0     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4B0, Member, Type: void *, ExceptionPortData
+        const s_field ExceptionPortData                                  = {
+            .byte = 0x4b0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4B0, Member, Type: unsigned __int64, ExceptionPortValue
+        const s_field ExceptionPortValue                                 = {
+            .byte = 0x4b0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this(bf)+0x4B0:0x0 len(0x3), Member, Type: unsigned __int64, ExceptionPortState
+        const s_field ExceptionPortState                                 = {
+            .byte = 0x4b0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x3  };
+        // Data           : this+0x4B8, Member, Type: struct _EX_FAST_REF, Token
+        const s_field Token                                              = {
+            .byte = 0x4b8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4C0, Member, Type: unsigned __int64, MmReserved
+        const s_field MmReserved                                         = {
+            .byte = 0x4c0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4C8, Member, Type: struct _EX_PUSH_LOCK, AddressCreationLock
+        const s_field AddressCreationLock                                = {
+            .byte = 0x4c8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4D0, Member, Type: struct _EX_PUSH_LOCK, PageTableCommitmentLock
+        const s_field PageTableCommitmentLock                            = {
+            .byte = 0x4d0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4D8, Member, Type: struct _ETHREAD *, RotateInProgress
+        const s_field RotateInProgress                                   = {
+            .byte = 0x4d8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4E0, Member, Type: struct _ETHREAD *, ForkInProgress
+        const s_field ForkInProgress                                     = {
+            .byte = 0x4e0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4E8, Member, Type: struct _EJOB * volatile, CommitChargeJob
+        const s_field CommitChargeJob                                    = {
+            .byte = 0x4e8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4F0, Member, Type: struct _RTL_AVL_TREE, CloneRoot
+        const s_field CloneRoot                                          = {
+            .byte = 0x4f0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x4F8, Member, Type: volatile unsigned __int64, NumberOfPrivatePages
+        const s_field NumberOfPrivatePages                               = {
+            .byte = 0x4f8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x500, Member, Type: volatile unsigned __int64, NumberOfLockedPages
+        const s_field NumberOfLockedPages                                = {
+            .byte = 0x500     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x508, Member, Type: void *, Win32Process
+        const s_field Win32Process                                       = {
+            .byte = 0x508     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x510, Member, Type: struct _EJOB * volatile, Job
+        const s_field Job                                                = {
+            .byte = 0x510     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x518, Member, Type: void *, SectionObject
+        const s_field SectionObject                                      = {
+            .byte = 0x518     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x520, Member, Type: void *, SectionBaseAddress
+        const s_field SectionBaseAddress                                 = {
+            .byte = 0x520     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x528, Member, Type: unsigned long, Cookie
+        const s_field Cookie                                             = {
+            .byte = 0x528     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x530, Member, Type: struct _PAGEFAULT_HISTORY *, WorkingSetWatch
+        const s_field WorkingSetWatch                                    = {
+            .byte = 0x530     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x538, Member, Type: void *, Win32WindowStation
+        const s_field Win32WindowStation                                 = {
+            .byte = 0x538     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x540, Member, Type: void *, InheritedFromUniqueProcessId
+        const s_field InheritedFromUniqueProcessId                       = {
+            .byte = 0x540     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x548, Member, Type: volatile unsigned __int64, OwnerProcessId
+        const s_field OwnerProcessId                                     = {
+            .byte = 0x548     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x550, Member, Type: struct _PEB *, Peb
+        const s_field Peb                                                = {
+            .byte = 0x550     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x558, Member, Type: struct _MM_SESSION_SPACE *, Session
+        const s_field Session                                            = {
+            .byte = 0x558     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x560, Member, Type: void *, Spare1
+        const s_field Spare1                                             = {
+            .byte = 0x560     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x568, Member, Type: struct _EPROCESS_QUOTA_BLOCK *, QuotaBlock
+        const s_field QuotaBlock                                         = {
+            .byte = 0x568     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x570, Member, Type: struct _HANDLE_TABLE *, ObjectTable
+        const s_field ObjectTable                                        = {
+            .byte = 0x570     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x578, Member, Type: void *, DebugPort
+        const s_field DebugPort                                          = {
+            .byte = 0x578     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x580, Member, Type: struct _EWOW64PROCESS *, WoW64Process
+        const s_field WoW64Process                                       = {
+            .byte = 0x580     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x588, Member, Type: void *, DeviceMap
+        const s_field DeviceMap                                          = {
+            .byte = 0x588     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x590, Member, Type: void *, EtwDataSource
+        const s_field EtwDataSource                                      = {
+            .byte = 0x590     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x598, Member, Type: unsigned __int64, PageDirectoryPte
+        const s_field PageDirectoryPte                                   = {
+            .byte = 0x598     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5A0, Member, Type: struct _FILE_OBJECT *, ImageFilePointer
+        const s_field ImageFilePointer                                   = {
+            .byte = 0x5a0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5A8, Member, Type: unsigned char[0xF], ImageFileName
+        const s_field ImageFileName                                      = {
+            .byte = 0x5a8     , .bytes = 0xf       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5B7, Member, Type: unsigned char, PriorityClass
+        const s_field PriorityClass                                      = {
+            .byte = 0x5b7     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5B8, Member, Type: void *, SecurityPort
+        const s_field SecurityPort                                       = {
+            .byte = 0x5b8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5C0, Member, Type: struct _SE_AUDIT_PROCESS_CREATION_INFO, SeAuditProcessCreationInfo
+        const s_field SeAuditProcessCreationInfo                         = {
+            .byte = 0x5c0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5C8, Member, Type: struct _LIST_ENTRY, JobLinks
+        const s_field JobLinks                                           = {
+            .byte = 0x5c8     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5D8, Member, Type: void *, HighestUserAddress
+        const s_field HighestUserAddress                                 = {
+            .byte = 0x5d8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5E0, Member, Type: struct _LIST_ENTRY, ThreadListHead
+        const s_field ThreadListHead                                     = {
+            .byte = 0x5e0     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5F0, Member, Type: volatile unsigned long, ActiveThreads
+        const s_field ActiveThreads                                      = {
+            .byte = 0x5f0     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5F4, Member, Type: unsigned long, ImagePathHash
+        const s_field ImagePathHash                                      = {
+            .byte = 0x5f4     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5F8, Member, Type: unsigned long, DefaultHardErrorProcessing
+        const s_field DefaultHardErrorProcessing                         = {
+            .byte = 0x5f8     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x5FC, Member, Type: long, LastThreadExitStatus
+        const s_field LastThreadExitStatus                               = {
+            .byte = 0x5fc     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x600, Member, Type: struct _EX_FAST_REF, PrefetchTrace
+        const s_field PrefetchTrace                                      = {
+            .byte = 0x600     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x608, Member, Type: void *, LockedPagesList
+        const s_field LockedPagesList                                    = {
+            .byte = 0x608     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x610, Member, Type: union _LARGE_INTEGER, ReadOperationCount
+        const s_field ReadOperationCount                                 = {
+            .byte = 0x610     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x618, Member, Type: union _LARGE_INTEGER, WriteOperationCount
+        const s_field WriteOperationCount                                = {
+            .byte = 0x618     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x620, Member, Type: union _LARGE_INTEGER, OtherOperationCount
+        const s_field OtherOperationCount                                = {
+            .byte = 0x620     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x628, Member, Type: union _LARGE_INTEGER, ReadTransferCount
+        const s_field ReadTransferCount                                  = {
+            .byte = 0x628     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x630, Member, Type: union _LARGE_INTEGER, WriteTransferCount
+        const s_field WriteTransferCount                                 = {
+            .byte = 0x630     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x638, Member, Type: union _LARGE_INTEGER, OtherTransferCount
+        const s_field OtherTransferCount                                 = {
+            .byte = 0x638     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x640, Member, Type: unsigned __int64, CommitChargeLimit
+        const s_field CommitChargeLimit                                  = {
+            .byte = 0x640     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x648, Member, Type: volatile unsigned __int64, CommitCharge
+        const s_field CommitCharge                                       = {
+            .byte = 0x648     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x650, Member, Type: volatile unsigned __int64, CommitChargePeak
+        const s_field CommitChargePeak                                   = {
+            .byte = 0x650     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x680, Member, Type: struct _MMSUPPORT_FULL, Vm
+        const s_field Vm                                                 = {
+            .byte = 0x680     , .bytes = 0x140     , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7C0, Member, Type: struct _LIST_ENTRY, MmProcessLinks
+        const s_field MmProcessLinks                                     = {
+            .byte = 0x7c0     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7D0, Member, Type: unsigned long, ModifiedPageCount
+        const s_field ModifiedPageCount                                  = {
+            .byte = 0x7d0     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7D4, Member, Type: long, ExitStatus
+        const s_field ExitStatus                                         = {
+            .byte = 0x7d4     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7D8, Member, Type: struct _RTL_AVL_TREE, VadRoot
+        const s_field VadRoot                                            = {
+            .byte = 0x7d8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7E0, Member, Type: void *, VadHint
+        const s_field VadHint                                            = {
+            .byte = 0x7e0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7E8, Member, Type: unsigned __int64, VadCount
+        const s_field VadCount                                           = {
+            .byte = 0x7e8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7F0, Member, Type: volatile unsigned __int64, VadPhysicalPages
+        const s_field VadPhysicalPages                                   = {
+            .byte = 0x7f0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x7F8, Member, Type: unsigned __int64, VadPhysicalPagesLimit
+        const s_field VadPhysicalPagesLimit                              = {
+            .byte = 0x7f8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x800, Member, Type: struct _ALPC_PROCESS_CONTEXT, AlpcContext
+        const s_field AlpcContext                                        = {
+            .byte = 0x800     , .bytes = 0x20      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x820, Member, Type: struct _LIST_ENTRY, TimerResolutionLink
+        const s_field TimerResolutionLink                                = {
+            .byte = 0x820     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x830, Member, Type: struct _PO_DIAG_STACK_RECORD *, TimerResolutionStackRecord
+        const s_field TimerResolutionStackRecord                         = {
+            .byte = 0x830     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x838, Member, Type: unsigned long, RequestedTimerResolution
+        const s_field RequestedTimerResolution                           = {
+            .byte = 0x838     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x83C, Member, Type: unsigned long, SmallestTimerResolution
+        const s_field SmallestTimerResolution                            = {
+            .byte = 0x83c     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x840, Member, Type: union _LARGE_INTEGER, ExitTime
+        const s_field ExitTime                                           = {
+            .byte = 0x840     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x848, Member, Type: struct _INVERTED_FUNCTION_TABLE *, InvertedFunctionTable
+        const s_field InvertedFunctionTable                              = {
+            .byte = 0x848     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x850, Member, Type: struct _EX_PUSH_LOCK, InvertedFunctionTableLock
+        const s_field InvertedFunctionTableLock                          = {
+            .byte = 0x850     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x858, Member, Type: unsigned long, ActiveThreadsHighWatermark
+        const s_field ActiveThreadsHighWatermark                         = {
+            .byte = 0x858     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x85C, Member, Type: unsigned long, LargePrivateVadCount
+        const s_field LargePrivateVadCount                               = {
+            .byte = 0x85c     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x860, Member, Type: struct _EX_PUSH_LOCK, ThreadListLock
+        const s_field ThreadListLock                                     = {
+            .byte = 0x860     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x868, Member, Type: void *, WnfContext
+        const s_field WnfContext                                         = {
+            .byte = 0x868     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x870, Member, Type: struct _EJOB *, ServerSilo
+        const s_field ServerSilo                                         = {
+            .byte = 0x870     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x878, Member, Type: unsigned char, SignatureLevel
+        const s_field SignatureLevel                                     = {
+            .byte = 0x878     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x879, Member, Type: unsigned char, SectionSignatureLevel
+        const s_field SectionSignatureLevel                              = {
+            .byte = 0x879     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x87A, Member, Type: struct _PS_PROTECTION, Protection
+        const s_field Protection                                         = {
+            .byte = 0x87a     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this(bf)+0x87B:0x0 len(0x3), Member, Type: unsigned char, HangCount
+        const s_field HangCount                                          = {
+            .byte = 0x87b     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x3  };
+        // Data           : this(bf)+0x87B:0x3 len(0x3), Member, Type: unsigned char, GhostCount
+        const s_field GhostCount                                         = {
+            .byte = 0x87b     , .bytes = 0x1       , .bit = 0x3 , .bits = 0x3  };
+        // Data           : this(bf)+0x87B:0x6 len(0x1), Member, Type: unsigned char, PrefilterException
+        const s_field PrefilterException                                 = {
+            .byte = 0x87b     , .bytes = 0x1       , .bit = 0x6 , .bits = 0x1  };
+        // Data           : this+0x87C, Member, Type: unsigned long, Flags3
+        const s_field Flags3                                             = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this(bf)+0x87C:0x0 len(0x1), Member, Type: unsigned long, Minimal
+        const s_field Minimal                                            = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x1 len(0x1), Member, Type: unsigned long, ReplacingPageRoot
+        const s_field ReplacingPageRoot                                  = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x2 len(0x1), Member, Type: unsigned long, Crashed
+        const s_field Crashed                                            = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x3 len(0x1), Member, Type: unsigned long, JobVadsAreTracked
+        const s_field JobVadsAreTracked                                  = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x4 len(0x1), Member, Type: unsigned long, VadTrackingDisabled
+        const s_field VadTrackingDisabled                                = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x5 len(0x1), Member, Type: unsigned long, AuxiliaryProcess
+        const s_field AuxiliaryProcess                                   = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x5 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x6 len(0x1), Member, Type: unsigned long, SubsystemProcess
+        const s_field SubsystemProcess                                   = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x6 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x7 len(0x1), Member, Type: unsigned long, IndirectCpuSets
+        const s_field IndirectCpuSets                                    = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x7 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x8 len(0x1), Member, Type: unsigned long, RelinquishedCommit
+        const s_field RelinquishedCommit                                 = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x8 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x9 len(0x1), Member, Type: unsigned long, HighGraphicsPriority
+        const s_field HighGraphicsPriority                               = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x9 , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0xA len(0x1), Member, Type: unsigned long, CommitFailLogged
+        const s_field CommitFailLogged                                   = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0xa , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0xB len(0x1), Member, Type: unsigned long, ReserveFailLogged
+        const s_field ReserveFailLogged                                  = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0xb , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0xC len(0x1), Member, Type: unsigned long, SystemProcess
+        const s_field SystemProcess                                      = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0xc , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0xD len(0x1), Member, Type: unsigned long, HideImageBaseAddresses
+        const s_field HideImageBaseAddresses                             = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0xd , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0xE len(0x1), Member, Type: unsigned long, AddressPolicyFrozen
+        const s_field AddressPolicyFrozen                                = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0xe , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0xF len(0x1), Member, Type: unsigned long, ProcessFirstResume
+        const s_field ProcessFirstResume                                 = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0xf , .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x10 len(0x1), Member, Type: unsigned long, ForegroundExternal
+        const s_field ForegroundExternal                                 = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x10, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x11 len(0x1), Member, Type: unsigned long, ForegroundSystem
+        const s_field ForegroundSystem                                   = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x11, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x12 len(0x1), Member, Type: unsigned long, HighMemoryPriority
+        const s_field HighMemoryPriority                                 = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x12, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x13 len(0x1), Member, Type: unsigned long, EnableProcessSuspendResumeLogging
+        const s_field EnableProcessSuspendResumeLogging                  = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x13, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x14 len(0x1), Member, Type: unsigned long, EnableThreadSuspendResumeLogging
+        const s_field EnableThreadSuspendResumeLogging                   = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x14, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x15 len(0x1), Member, Type: unsigned long, SecurityDomainChanged
+        const s_field SecurityDomainChanged                              = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x15, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x16 len(0x1), Member, Type: unsigned long, SecurityFreezeComplete
+        const s_field SecurityFreezeComplete                             = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x16, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x17 len(0x1), Member, Type: unsigned long, VmProcessorHost
+        const s_field VmProcessorHost                                    = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x17, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x18 len(0x1), Member, Type: unsigned long, VmProcessorHostTransition
+        const s_field VmProcessorHostTransition                          = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x18, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x19 len(0x1), Member, Type: unsigned long, AltSyscall
+        const s_field AltSyscall                                         = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x19, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x1A len(0x1), Member, Type: unsigned long, TimerResolutionIgnore
+        const s_field TimerResolutionIgnore                              = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x1a, .bits = 0x1  };
+        // Data           : this(bf)+0x87C:0x1B len(0x1), Member, Type: unsigned long, DisallowUserTerminate
+        const s_field DisallowUserTerminate                              = {
+            .byte = 0x87c     , .bytes = 0x4       , .bit = 0x1b, .bits = 0x1  };
+        // Data           : this+0x880, Member, Type: long, DeviceAsid
+        const s_field DeviceAsid                                         = {
+            .byte = 0x880     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x888, Member, Type: void *, SvmData
+        const s_field SvmData                                            = {
+            .byte = 0x888     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x890, Member, Type: struct _EX_PUSH_LOCK, SvmProcessLock
+        const s_field SvmProcessLock                                     = {
+            .byte = 0x890     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x898, Member, Type: unsigned __int64, SvmLock
+        const s_field SvmLock                                            = {
+            .byte = 0x898     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8A0, Member, Type: struct _LIST_ENTRY, SvmProcessDeviceListHead
+        const s_field SvmProcessDeviceListHead                           = {
+            .byte = 0x8a0     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8B0, Member, Type: unsigned __int64, LastFreezeInterruptTime
+        const s_field LastFreezeInterruptTime                            = {
+            .byte = 0x8b0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8B8, Member, Type: struct _PROCESS_DISK_COUNTERS *, DiskCounters
+        const s_field DiskCounters                                       = {
+            .byte = 0x8b8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8C0, Member, Type: void *, PicoContext
+        const s_field PicoContext                                        = {
+            .byte = 0x8c0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8C8, Member, Type: void *, EnclaveTable
+        const s_field EnclaveTable                                       = {
+            .byte = 0x8c8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8D0, Member, Type: unsigned __int64, EnclaveNumber
+        const s_field EnclaveNumber                                      = {
+            .byte = 0x8d0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8D8, Member, Type: struct _EX_PUSH_LOCK, EnclaveLock
+        const s_field EnclaveLock                                        = {
+            .byte = 0x8d8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8E0, Member, Type: unsigned long, HighPriorityFaultsAllowed
+        const s_field HighPriorityFaultsAllowed                          = {
+            .byte = 0x8e0     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8E8, Member, Type: struct _PO_PROCESS_ENERGY_CONTEXT *, EnergyContext
+        const s_field EnergyContext                                      = {
+            .byte = 0x8e8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8F0, Member, Type: void *, VmContext
+        const s_field VmContext                                          = {
+            .byte = 0x8f0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x8F8, Member, Type: unsigned __int64, SequenceNumber
+        const s_field SequenceNumber                                     = {
+            .byte = 0x8f8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x900, Member, Type: unsigned __int64, CreateInterruptTime
+        const s_field CreateInterruptTime                                = {
+            .byte = 0x900     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x908, Member, Type: unsigned __int64, CreateUnbiasedInterruptTime
+        const s_field CreateUnbiasedInterruptTime                        = {
+            .byte = 0x908     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x910, Member, Type: unsigned __int64, TotalUnbiasedFrozenTime
+        const s_field TotalUnbiasedFrozenTime                            = {
+            .byte = 0x910     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x918, Member, Type: unsigned __int64, LastAppStateUpdateTime
+        const s_field LastAppStateUpdateTime                             = {
+            .byte = 0x918     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this(bf)+0x920:0x0 len(0x3D), Member, Type: unsigned __int64, LastAppStateUptime
+        const s_field LastAppStateUptime                                 = {
+            .byte = 0x920     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x3d };
+        // Data           : this(bf)+0x920:0x3D len(0x3), Member, Type: unsigned __int64, LastAppState
+        const s_field LastAppState                                       = {
+            .byte = 0x920     , .bytes = 0x8       , .bit = 0x3d, .bits = 0x3  };
+        // Data           : this+0x928, Member, Type: volatile unsigned __int64, SharedCommitCharge
+        const s_field SharedCommitCharge                                 = {
+            .byte = 0x928     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x930, Member, Type: struct _EX_PUSH_LOCK, SharedCommitLock
+        const s_field SharedCommitLock                                   = {
+            .byte = 0x930     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x938, Member, Type: struct _LIST_ENTRY, SharedCommitLinks
+        const s_field SharedCommitLinks                                  = {
+            .byte = 0x938     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x948, Member, Type: unsigned __int64, AllowedCpuSets
+        const s_field AllowedCpuSets                                     = {
+            .byte = 0x948     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x950, Member, Type: unsigned __int64, DefaultCpuSets
+        const s_field DefaultCpuSets                                     = {
+            .byte = 0x950     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x948, Member, Type: unsigned __int64 *, AllowedCpuSetsIndirect
+        const s_field AllowedCpuSetsIndirect                             = {
+            .byte = 0x948     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x950, Member, Type: unsigned __int64 *, DefaultCpuSetsIndirect
+        const s_field DefaultCpuSetsIndirect                             = {
+            .byte = 0x950     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x958, Member, Type: void *, DiskIoAttribution
+        const s_field DiskIoAttribution                                  = {
+            .byte = 0x958     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x960, Member, Type: void *, DxgProcess
+        const s_field DxgProcess                                         = {
+            .byte = 0x960     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x968, Member, Type: unsigned long, Win32KFilterSet
+        const s_field Win32KFilterSet                                    = {
+            .byte = 0x968     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x970, Member, Type: volatile union _PS_INTERLOCKED_TIMER_DELAY_VALUES, ProcessTimerDelay
+        const s_field ProcessTimerDelay                                  = {
+            .byte = 0x970     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x978, Member, Type: volatile unsigned long, KTimerSets
+        const s_field KTimerSets                                         = {
+            .byte = 0x978     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x97C, Member, Type: volatile unsigned long, KTimer2Sets
+        const s_field KTimer2Sets                                        = {
+            .byte = 0x97c     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x980, Member, Type: volatile unsigned long, ThreadTimerSets
+        const s_field ThreadTimerSets                                    = {
+            .byte = 0x980     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x988, Member, Type: unsigned __int64, VirtualTimerListLock
+        const s_field VirtualTimerListLock                               = {
+            .byte = 0x988     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x990, Member, Type: struct _LIST_ENTRY, VirtualTimerListHead
+        const s_field VirtualTimerListHead                               = {
+            .byte = 0x990     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9A0, Member, Type: struct _WNF_STATE_NAME, WakeChannel
+        const s_field WakeChannel                                        = {
+            .byte = 0x9a0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9A0, Member, Type: struct _PS_PROCESS_WAKE_INFORMATION, WakeInfo
+        const s_field WakeInfo                                           = {
+            .byte = 0x9a0     , .bytes = 0x30      , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9D0, Member, Type: unsigned long, MitigationFlags
+        const s_field MitigationFlags                                    = {
+            .byte = 0x9d0     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9D0, Member, Type: struct <anonymous-tag>, MitigationFlagsValues
+        const s_field MitigationFlagsValues                              = {
+            .byte = 0x9d0     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9D4, Member, Type: unsigned long, MitigationFlags2
+        const s_field MitigationFlags2                                   = {
+            .byte = 0x9d4     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9D4, Member, Type: struct <anonymous-tag>, MitigationFlags2Values
+        const s_field MitigationFlags2Values                             = {
+            .byte = 0x9d4     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9D8, Member, Type: void *, PartitionObject
+        const s_field PartitionObject                                    = {
+            .byte = 0x9d8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9E0, Member, Type: unsigned __int64, SecurityDomain
+        const s_field SecurityDomain                                     = {
+            .byte = 0x9e0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9E8, Member, Type: unsigned __int64, ParentSecurityDomain
+        const s_field ParentSecurityDomain                               = {
+            .byte = 0x9e8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9F0, Member, Type: void *, CoverageSamplerContext
+        const s_field CoverageSamplerContext                             = {
+            .byte = 0x9f0     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0x9F8, Member, Type: void *, MmHotPatchContext
+        const s_field MmHotPatchContext                                  = {
+            .byte = 0x9f8     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0xA00, Member, Type: struct _RTL_AVL_TREE, DynamicEHContinuationTargetsTree
+        const s_field DynamicEHContinuationTargetsTree                   = {
+            .byte = 0xa00     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0xA08, Member, Type: struct _EX_PUSH_LOCK, DynamicEHContinuationTargetsLock
+        const s_field DynamicEHContinuationTargetsLock                   = {
+            .byte = 0xa08     , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
+        // Data           : this+0xA10, Member, Type: struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES, DynamicEnforcedCetCompatibleRanges
+        const s_field DynamicEnforcedCetCompatibleRanges                 = {
+            .byte = 0xa10     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
+    }
     namespace _PUBLIC {
     }
 }

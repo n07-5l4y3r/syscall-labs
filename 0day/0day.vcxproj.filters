@@ -33,9 +33,27 @@
     <ClCompile Include="offsets\win32k.sys.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="offsets\handwritten.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ring0_exec\ring0_exec.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="phys_mem\phys_mem.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="offsets\offset.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ring0_exec\ring0_exec.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="inc.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="phys_mem\phys_mem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

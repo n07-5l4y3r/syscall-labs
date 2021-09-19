@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "drv_cpp", "drv_cpp\drv_cpp.vcxproj", "{9B947191-394B-4106-B689-E8B44F81FA08}"
-	ProjectSection(ProjectDependencies) = postProject
-		{50D68457-A4D1-4187-8E54-3FD5CA141270} = {50D68457-A4D1-4187-8E54-3FD5CA141270}
-		{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0} = {0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pdb2header", "pdb2header\pdb2header.vcxproj", "{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcxproj", "{50D68457-A4D1-4187-8E54-3FD5CA141270}"
@@ -31,18 +25,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Debug|x64.ActiveCfg = Debug|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Debug|x64.Build.0 = Debug|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Debug|x64.Deploy.0 = Debug|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Debug|x86.ActiveCfg = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Debug|x86.Build.0 = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Debug|x86.Deploy.0 = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Release|x64.ActiveCfg = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Release|x64.Build.0 = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Release|x64.Deploy.0 = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Release|x86.ActiveCfg = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Release|x86.Build.0 = Release|x64
-		{9B947191-394B-4106-B689-E8B44F81FA08}.Release|x86.Deploy.0 = Release|x64
 		{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}.Debug|x64.ActiveCfg = Debug|x64
 		{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}.Debug|x64.Build.0 = Debug|x64
 		{0D860BD9-0CBF-4792-9CBD-D0688EE86BF0}.Debug|x86.ActiveCfg = Debug|Win32

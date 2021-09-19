@@ -281,7 +281,6 @@ NTSTATUS pFillGeneratedPML4TandPDPT(PPHYSICAL_OP_CR3 pPhysicalOpCR3)
 		(PVOID)((ULONG64)pPhysicalOpCR3->pSystemPML4TMap + SystemPML4TStart * ENTRY_SIZE),
 		(MAX_ENTRY_COUNT - SystemPML4TStart) * ENTRY_SIZE
 	);
-	
 
 	//make the first address point to my PDPT table
 	*(PULONG64)pPhysicalOpCR3->pAllocVA_PML4T = (ULONG64)pPhysicalOpCR3->pAllocPA_PDPT | PAGE_TABLE_PML4T_FLAG;
