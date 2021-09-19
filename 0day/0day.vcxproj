@@ -135,7 +135,7 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB _PEB _PEB_LDR_DATA _LDR_DATA_TABLE_ENTRY &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
 $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -157,7 +157,7 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
+      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB _PEB _PEB_LDR_DATA _LDR_DATA_TABLE_ENTRY &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
 $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -166,6 +166,7 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
     <ClCompile Include="..\kdmapper\kdmapper\service.cpp" />
     <ClCompile Include="..\kdmapper\kdmapper\utils.cpp" />
     <ClCompile Include="0day.cpp" />
+    <ClCompile Include="cheese\gate.cpp" />
     <ClCompile Include="offsets\handwritten.cpp" />
     <ClCompile Include="offsets\ntoskrnl.exe.cpp" />
     <ClCompile Include="offsets\win32k.sys.cpp" />
@@ -173,6 +174,7 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
     <ClCompile Include="ring0_exec\ring0_exec.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cheese\gate.h" />
     <ClInclude Include="offsets\offset.h" />
     <ClInclude Include="inc.h" />
     <ClInclude Include="phys_mem\phys_mem.h" />

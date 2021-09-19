@@ -55,6 +55,25 @@ namespace offset {
 	namespace _EPROCESS
 	{
 		extern const s_field Pcb;
+		extern const s_field Peb;
+	}
+
+	namespace _PEB
+	{
+		extern const s_field Ldr;
+	}
+
+	namespace _PEB_LDR_DATA
+	{
+		extern const s_field InMemoryOrderModuleList;
+	}
+
+	namespace _LDR_DATA_TABLE_ENTRY
+	{
+		extern const s_field InMemoryOrderLinks;
+		extern const s_field BaseDllName;
+		extern const s_field DllBase;
+		extern const s_field SizeOfImage;
 	}
 
 	namespace _KPROCESS

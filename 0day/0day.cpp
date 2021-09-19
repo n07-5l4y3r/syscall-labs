@@ -6,7 +6,7 @@ int main(const int argc, char* argv[])
 		MessageBoxA(0, "I just force win32u", "Bye!", MB_OK);
 	
 	const auto hDev = intel_driver::Load();
-	const auto gate = new ring0_exec(
+	const auto exec = new ring0_exec(
 		&GetModuleHandleA,
 		&GetProcAddress,
 		hDev,
@@ -16,37 +16,25 @@ int main(const int argc, char* argv[])
 		&intel_driver::WriteMemory,
 		&intel_driver::AllocatePool);
 	intel_driver::Unload(hDev);
-	const auto phys = new phys_mem(gate);
+	const auto phys = new phys_mem(exec);
 	
-	const auto this_cr3 = phys->GetCR3ByPID(GetCurrentProcessId());
-	PRINTVAR(this_cr3, "%llx");
-	
-	const auto VA_1337 = VirtualAlloc(NULL, 0x1000, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	memcpy(VA_1337, "1337\0", 5);
-	const auto VA_420 = VirtualAlloc(NULL, 0x1000, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	memcpy(VA_420, "420\0", 4);
+	const auto notepad = new cheese::gate(phys, "notepad.exe", "notepad.exe");
+	std::cout << "Notepad-Base: " << std::hex << notepad->base() << std::endl;
+	const auto magic = "MZ";
+	auto i = 0;
 
-	auto begin = std::chrono::high_resolution_clock::now();
-	const auto PA_1337 = phys->VA_2_PA(this_cr3, reinterpret_cast<ULONG64>(VA_1337));
-	auto end = std::chrono::high_resolution_clock::now();
-	std::cout << "Translate took: " << std::chrono::nanoseconds(end - begin).count() << " ns" << std::endl;
-
-	begin = std::chrono::high_resolution_clock::now();
-	const auto PA_420 = phys->VA_2_PA(this_cr3, reinterpret_cast<ULONG64>(VA_420));
-	end = std::chrono::high_resolution_clock::now();
-	std::cout << "Translate took: " << std::chrono::nanoseconds(end - begin).count() << " ns" << std::endl;
-	
-	PRINTVAR(VA_1337, "%s");
-	PRINTVAR(VA_420, "%s");
-
-	begin = std::chrono::high_resolution_clock::now();
-	phys->MEM_CPY(PA_1337, PA_420, 4);
-	end = std::chrono::high_resolution_clock::now();
-	std::cout << "Copy took: " << std::chrono::nanoseconds(end - begin).count() << " ns" << std::endl;
-	
-	PRINTVAR(VA_1337, "%s");
-	PRINTVAR(VA_420, "%s");
+	const auto a = std::chrono::high_resolution_clock::now();
+	for ( ; i < 2000000; i++)
+	{
+		const auto tmp = notepad->read<short>(reinterpret_cast<void*>(notepad->base()));
+		if (tmp != *(short*)magic) {
+			std::cout << tmp << std::endl;
+			break;
+		}
+	}
+	const auto b = std::chrono::high_resolution_clock::now();
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::nanoseconds(b - a)).count() << " ms" << std::endl;
 	
 	delete phys;
-	delete gate;
+	delete exec;
 }

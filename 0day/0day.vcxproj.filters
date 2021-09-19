@@ -42,6 +42,9 @@
     <ClCompile Include="phys_mem\phys_mem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="cheese\gate.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="offsets\offset.h">
@@ -54,6 +57,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="phys_mem\phys_mem.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="cheese\gate.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

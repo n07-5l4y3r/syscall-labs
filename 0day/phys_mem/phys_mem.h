@@ -8,7 +8,8 @@ class phys_mem
 	static constexpr unsigned shellcode_exec_phys_cr3 = 0x2B;
 	static unsigned char shellcode_translate[];
 	static unsigned char shellcode_memcpy[];
-	
+
+public:
 	ring0_exec* gate;
 
 public:
