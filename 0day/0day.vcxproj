@@ -166,6 +166,7 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
     <ClCompile Include="..\kdmapper\kdmapper\service.cpp" />
     <ClCompile Include="..\kdmapper\kdmapper\utils.cpp" />
     <ClCompile Include="0day.cpp" />
+    <ClCompile Include="cheese\cheese.cpp" />
     <ClCompile Include="cheese\gate.cpp" />
     <ClCompile Include="offsets\handwritten.cpp" />
     <ClCompile Include="offsets\ntoskrnl.exe.cpp" />
@@ -174,6 +175,7 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
     <ClCompile Include="ring0_exec\ring0_exec.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cheese\cheese.h" />
     <ClInclude Include="cheese\gate.h" />
     <ClInclude Include="offsets\offset.h" />
     <ClInclude Include="inc.h" />

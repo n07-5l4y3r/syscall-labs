@@ -24,15 +24,22 @@ DWORD cheese::gate::pid(std::string exe)
 
 uint64_t cheese::gate::gmod(const std::string& name)
 {
+	printf("[%s] start\n", __FUNCTION__);
+
 	const auto ppPeb = offset::ptr_field(offset::_EPROCESS::Peb, this->target_peproc);
-	const auto pPeb = this->read<PVOID>(ppPeb);
+	auto pPeb = PVOID();/*this->read<PVOID>(ppPeb);*/
 	//PVOID pPeb = nullptr;
-	//this->phys->gate->R0_RtlCopyMemory(&pPeb, ppPeb, sizeof(PVOID));
+	this->phys->gate->R0_RtlCopyMemory(&pPeb, ppPeb, sizeof(PVOID));
+
+	printf("[%s] this->target_peproc %p\n", __FUNCTION__, this->target_peproc);
+	printf("[%s] ppPeb %p\n", __FUNCTION__, ppPeb);
+	printf("[%s] pPeb %p\n", __FUNCTION__, pPeb);
 	if (!pPeb) return 0;
 
 	const auto ppLdr = offset::ptr_field(offset::_PEB::Ldr, pPeb);
 	const auto pLdr = this->read<PVOID>(ppLdr);
 	if (!pLdr) return 0;
+	printf("[%s] pLdr %p\n", __FUNCTION__, pLdr);
 
 	const auto pInMemoryOrderModuleList = static_cast<PLIST_ENTRY>(offset::ptr_field(offset::_PEB_LDR_DATA::InMemoryOrderModuleList, pLdr));
 	for (auto pListEntry = this->read<PLIST_ENTRY>(&pInMemoryOrderModuleList->Flink);
@@ -49,6 +56,9 @@ uint64_t cheese::gate::gmod(const std::string& name)
 				this->self_cr3, wbuf.data(),
 				this->target_cr3, this->read<PVOID>(&pBaseDllName->Buffer),
 				ulength);
+
+			wprintf(L"[%s] -> %s\n", __FUNCTION__, wbuf.c_str());
+
 			std::ranges::transform(wbuf, wbuf.begin(), [](const wchar_t & c) -> wchar_t { return std::towlower(c); });
 			if (std::string(wbuf.begin(), wbuf.end()).find(name) != std::string::npos)
 			{
@@ -66,15 +76,16 @@ cheese::gate::gate(phys_mem* ph, const std::string t, const std::string p)
 	this->phys = ph;
 
 	this->target_pid = this->pid(p);
-	if (!this->target_pid) { printf("obamna sehr kapoot\n"); return; }
+	if (!this->target_pid) { printf("error this->target_pid\n"); return; }
 	this->target_peproc = this->phys->GetEProcessByPID(this->target_pid);
-	if (!this->target_peproc) { printf("obama äusserst kapoot\n"); return; }
+	if (!this->target_peproc) { printf("error this->target_peproc\n"); return; }
 	this->self_cr3 = this->phys->GetCR3ByPID(GetCurrentProcessId());
-	if (!this->self_cr3) { printf("obamna sprechlessless\n"); return; }
+	if (!this->self_cr3) { printf("error this->self_cr3\n"); return; }
 	this->target_cr3 = this->phys->GetCR3ByEprocess(this->target_peproc);
-	if (!this->target_cr3) { printf("obamna seems totally wrong\n"); return; }
-	this->target_base = this->gmod(this->target_name = t);
-	if (!this->target_base) { printf("obamna kapoot\n"); return; }
+	if (!this->target_cr3) { printf("error this->target_cr3\n"); return; }
+	this->target_name = t;
+	this->target_base = this->gmod(this->target_name);
+	if (!this->target_base) { printf("error this->target_base\n"); return; }
 }
 
 uint64_t cheese::gate::base()
