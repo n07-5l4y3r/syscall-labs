@@ -1247,9 +1247,6 @@ namespace offset {
         // Data           : this+0xA10, Member, Type: struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES, DynamicEnforcedCetCompatibleRanges
         const s_field DynamicEnforcedCetCompatibleRanges                 = {
             .byte = 0xa10     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
-        // Data           : this+0xA20, Member, Type: unsigned long, DisabledComponentFlags
-        const s_field DisabledComponentFlags                             = {
-            .byte = 0xa20     , .bytes = 0x4       , .bit = 0x0 , .bits = 0x0  };
     }
     namespace _MMPTE_HARDWARE {
         // Data           : this(bf)+0x0:0x0 len(0x1), Member, Type: unsigned __int64, Valid

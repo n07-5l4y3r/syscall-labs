@@ -52,7 +52,7 @@ ULONG64 cheese::gate::gmod(const std::string& name)
 		{
 			std::wstring wbuf(ulength / sizeof(wchar_t), L'\0');
 		
-			this->target_mgr->copy_safe(this->self_mgr, wbuf.data(), this->read_sc<void*>(&pBaseDllName->Buffer), ulength);
+			this->target_mgr->copy_via_shellcod(this->self_mgr, wbuf.data(), this->read_sc<void*>(&pBaseDllName->Buffer), ulength);
 			
 			std::ranges::transform(wbuf, wbuf.begin(), [](const wchar_t & c) -> wchar_t { return std::towlower(c); });
 			std::wcout << L"    " << wbuf << std::endl;
@@ -76,12 +76,14 @@ cheese::gate::gate(ring0_exec* r0, phys_mem* phys, const std::string t, const st
 	this->target_pid = this->pid(p);
 
 	if (!this->target_pid) { printf("error this->target_pid\n"); return; }
-	this->target_peproc = this->phys->GetEProcessByPID(this->target_pid);
+	this->target_peproc = this->r0->GetEProcessByPID(this->target_pid);
 	if (!this->target_peproc) { printf("error this->target_peproc\n"); return; }
-	this->self_cr3 = this->phys->GetCR3ByPID(GetCurrentProcessId());
-	if (!this->self_cr3) { printf("error this->self_cr3\n"); return; }
-	this->target_cr3 = this->phys->GetCR3ByEprocess(this->target_peproc);
-	if (!this->target_cr3) { printf("error this->target_cr3\n"); return; }
+
+	this->self_mgr = new mem_mgr(this->r0, this->phys, this->r0->GetCR3ByPID(GetCurrentProcessId()));
+	if (!this->self_mgr) { printf("error this->self_cr3\n"); return; }
+	this->target_mgr = new mem_mgr(this->r0, this->phys, this->r0->GetCR3ByEprocess(this->target_peproc));
+	if (!this->target_mgr) { printf("error this->target_cr3\n"); return; }
+
 	this->target_name = t;
 	this->target_base = this->gmod(this->target_name);
 	if (!this->target_base) { printf("error this->target_base\n"); return; }
