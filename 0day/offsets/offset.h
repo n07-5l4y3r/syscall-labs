@@ -80,6 +80,35 @@ namespace offset {
 	{
 		extern const s_field DirectoryTableBase;
 	}
+
+	namespace _MMPTE_HARDWARE
+	{
+		extern const s_field Valid;
+		extern const s_field LargePage;
+		extern const s_field PageFrameNumber;
+	}
+
+	namespace _MMPTE_SOFTWARE
+	{
+		extern const s_field Valid;
+		extern const s_field Prototype;
+		extern const s_field Transition;
+		extern const s_field PageFileHigh;
+	}
+
+	namespace _MMPTE_TRANSITION
+	{
+		extern const s_field Valid;
+		extern const s_field Prototype;
+		extern const s_field Transition;
+	}
+
+	namespace _MMPTE_PROTOTYPE
+	{
+		extern const s_field Valid;
+		extern const s_field Prototype;
+		extern const s_field ProtoAddress;
+	}
 	
 	namespace _PUBLIC
 	{

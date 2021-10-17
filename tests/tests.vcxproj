@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e677f5b0-883d-4e33-8f67-8da230587e47}</ProjectGuid>
-    <RootNamespace>My0day</RootNamespace>
+    <ProjectGuid>{1219d057-eea1-49dd-8391-18bc93d968af}</ProjectGuid>
+    <RootNamespace>tests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -78,17 +79,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)bin\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)bin\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,7 +89,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,7 +103,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,17 +118,11 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB _PEB _PEB_LDR_DATA _LDR_DATA_TABLE_ENTRY _MMPTE_HARDWARE _MMPTE_SOFTWARE _MMPTE_TRANSITION _MMPTE_PROTOTYPE &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
-$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -147,54 +132,23 @@ $(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.ex
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)ntoskrnl.exe _EPROCESS _KPROCESS _TEB _PEB _PEB_LDR_DATA _LDR_DATA_TABLE_ENTRY _MMPTE_HARDWARE _MMPTE_SOFTWARE _MMPTE_TRANSITION _MMPTE_PROTOTYPE &gt; $(ProjectDir)offsets\ntoskrnl.exe.cpp
-$(SolutionDir)bin\$(PlatformShortName)\$(Configuration)\pdb2header\pdb2header.exe $(SolutionDir)win32k.sys NtGdiEngTransparentBlt &gt; $(ProjectDir)offsets\win32k.sys.cpp</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\kdmapper\kdmapper\intel_driver.cpp" />
-    <ClCompile Include="..\kdmapper\kdmapper\service.cpp" />
-    <ClCompile Include="..\kdmapper\kdmapper\utils.cpp" />
-    <ClCompile Include="0day.cpp" />
-    <ClCompile Include="cheese\gate.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="mem_mgr\mem_mgr.cpp" />
-    <ClCompile Include="offsets\handwritten.cpp" />
-    <ClCompile Include="offsets\ntoskrnl.exe.cpp" />
-    <ClCompile Include="offsets\win32k.sys.cpp" />
-    <ClCompile Include="phys_mem\phys_mem.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="ring0_exec\ring0_exec.cpp" />
+    <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cheese\gate.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="mem_mgr\mem_mgr.h" />
-    <ClInclude Include="offsets\offset.h" />
-    <ClInclude Include="inc.h" />
-    <ClInclude Include="phys_mem\phys_mem.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="ring0_exec\ring0_exec.h" />
+    <MASM Include="asm.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
   </ImportGroup>
 </Project>

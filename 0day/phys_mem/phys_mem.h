@@ -6,38 +6,37 @@ class phys_mem
 {
 	static unsigned char shellcode_exec_phys[];
 	static constexpr unsigned shellcode_exec_phys_cr3 = 0x2B;
-	static unsigned char shellcode_translate[];
 	static unsigned char shellcode_memcpy[];
 
 public:
-	ring0_exec* gate;
+	ring0_exec* r0;
 
 public:
-	ULONG64 GetCR3ByEprocess(const PVOID pEProc) const;
-	PVOID GetEProcessByPID(const ULONG64 PID) const;
-	ULONG64 GetCR3ByPID(const ULONG64 PID) const;
-
-private:
 	static ULONG64 GetCR3Flag(const ULONG64 CR3);
 	static ULONG64 ClearCR3Flag(const ULONG64 CR3);
-	ULONG64 MmGetVirtualForPhysical(const ULONG64 PhysicalAddress) const;
 
+private:
+	ULONG64 r0_MmGetVirtualForPhysical;
+
+public:
+	ULONG64 _MmGetVirtualForPhysical(const ULONG64 PA) const;
+
+private:
 	ULONG64 r0_CR3_System;
+public:
 	ULONG64 r0_CR3_PHYS;
-	
+private:
 	ULONG64 r0_PA_System_PML4T;
 	ULONG64 r0_VA_System_PML4T;
-
 	ULONG64 r0_VA_PHYS_PML4T;
 	ULONG64 r0_PA_PHYS_PML4T;
-
 	ULONG64 r0_VA_PHYS_PDPT;
 	ULONG64 r0_PA_PHYS_PDPT;
-
+	
 	PVOID r0_SC_EXEC_PHYS;
-	PVOID r0_SC_TRANSLATE;
 	PVOID r0_SC_MEMCPY;
 
+public:
 	typedef struct _MMVA
 	{
 		struct /* bitfield */
@@ -50,7 +49,7 @@ private:
 			/* 0x0000 */ unsigned __int64 Partition : 16; //User:0x0000 System:0xFFFF
 		}; /* bitfield */
 	} MMVA, * PMMVA; /* size: 0x0008 */
-
+private:
 	typedef struct _MMPDPTE
 	{
 		struct /* bitfield */
@@ -75,12 +74,14 @@ private:
 		}; /* bitfield */
 	} MMPDPTE, * PMMPDPTE; /* size: 0x0008 */
 
-public:
-
+private:
 	ULONG64 EX_PHYS(const ULONG64 adr, const ULONG64 P1 = NULL, const ULONG64 P2 = NULL, const ULONG64 P3 = NULL) const;
-	ULONG64 VA_2_PA(const ULONG64 CR3, const ULONG64 VA) const;
-	ULONG64 MEM_CPY(const ULONG64 PA_Dest, const ULONG64 PA_Src, const SIZE_T Size) const;
-	ULONG64 MEM_CPY(const ULONG64 CR3_Dest, const PVOID VA_Dest, const ULONG64 CR3_Src, const PVOID VA_Src, const SIZE_T Size) const;
+
+public:
+	ULONG64 G_PA_QWORD(const ULONG64 PA) const;
+	void    S_PA_QWORD(const ULONG64 PA, const ULONG64 var) const;
+
+	ULONG64 UNSAFE_PHYS_MEMCPY(const ULONG64 PA_Dest, const ULONG64 PA_Src, const SIZE_T Size) const;
 	
 	phys_mem(ring0_exec* gate);
 	~phys_mem();

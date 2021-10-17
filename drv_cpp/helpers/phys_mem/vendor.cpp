@@ -38,7 +38,7 @@ typedef struct _MMPDPTE
 		/* 0x0000 */ unsigned __int64 NoExecute : 1; /* bit position: 63 */
 	}; /* bitfield */
 } MMPDPTE, * PMMPDPTE; /* size: 0x0008 */
-
++
 typedef struct _MMVA
 {
 	struct /* bitfield */

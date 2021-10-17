@@ -1248,6 +1248,103 @@ namespace offset {
         const s_field DynamicEnforcedCetCompatibleRanges                 = {
             .byte = 0xa10     , .bytes = 0x10      , .bit = 0x0 , .bits = 0x0  };
     }
+    namespace _MMPTE_HARDWARE {
+        // Data           : this(bf)+0x0:0x0 len(0x1), Member, Type: unsigned __int64, Valid
+        const s_field Valid                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x1 len(0x1), Member, Type: unsigned __int64, Dirty1
+        const s_field Dirty1                                             = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x2 len(0x1), Member, Type: unsigned __int64, Owner
+        const s_field Owner                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x3 len(0x1), Member, Type: unsigned __int64, WriteThrough
+        const s_field WriteThrough                                       = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x4 len(0x1), Member, Type: unsigned __int64, CacheDisable
+        const s_field CacheDisable                                       = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x5 len(0x1), Member, Type: unsigned __int64, Accessed
+        const s_field Accessed                                           = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x5 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x6 len(0x1), Member, Type: unsigned __int64, Dirty
+        const s_field Dirty                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x6 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x7 len(0x1), Member, Type: unsigned __int64, LargePage
+        const s_field LargePage                                          = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x7 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x8 len(0x1), Member, Type: unsigned __int64, Global
+        const s_field Global                                             = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x8 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x9 len(0x1), Member, Type: unsigned __int64, CopyOnWrite
+        const s_field CopyOnWrite                                        = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x9 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xA len(0x1), Member, Type: unsigned __int64, Unused
+        const s_field Unused                                             = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xa , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xB len(0x1), Member, Type: unsigned __int64, Write
+        const s_field Write                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xb , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xC len(0x24), Member, Type: unsigned __int64, PageFrameNumber
+        const s_field PageFrameNumber                                    = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xc , .bits = 0x24 };
+        // Data           : this(bf)+0x0:0x30 len(0x4), Member, Type: unsigned __int64, ReservedForHardware
+        const s_field ReservedForHardware                                = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x30, .bits = 0x4  };
+        // Data           : this(bf)+0x0:0x34 len(0x4), Member, Type: unsigned __int64, ReservedForSoftware
+        const s_field ReservedForSoftware                                = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x34, .bits = 0x4  };
+        // Data           : this(bf)+0x0:0x38 len(0x4), Member, Type: unsigned __int64, WsleAge
+        const s_field WsleAge                                            = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x38, .bits = 0x4  };
+        // Data           : this(bf)+0x0:0x3C len(0x3), Member, Type: unsigned __int64, WsleProtection
+        const s_field WsleProtection                                     = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x3c, .bits = 0x3  };
+        // Data           : this(bf)+0x0:0x3F len(0x1), Member, Type: unsigned __int64, NoExecute
+        const s_field NoExecute                                          = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x3f, .bits = 0x1  };
+    }
+    namespace _MMPTE_SOFTWARE {
+        // Data           : this(bf)+0x0:0x0 len(0x1), Member, Type: unsigned __int64, Valid
+        const s_field Valid                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x1 len(0x1), Member, Type: unsigned __int64, PageFileReserved
+        const s_field PageFileReserved                                   = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x2 len(0x1), Member, Type: unsigned __int64, PageFileAllocated
+        const s_field PageFileAllocated                                  = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x3 len(0x1), Member, Type: unsigned __int64, ColdPage
+        const s_field ColdPage                                           = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x4 len(0x1), Member, Type: unsigned __int64, SwizzleBit
+        const s_field SwizzleBit                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x5 len(0x5), Member, Type: unsigned __int64, Protection
+        const s_field Protection                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x5 , .bits = 0x5  };
+        // Data           : this(bf)+0x0:0xA len(0x1), Member, Type: unsigned __int64, Prototype
+        const s_field Prototype                                          = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xa , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xB len(0x1), Member, Type: unsigned __int64, Transition
+        const s_field Transition                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xb , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xC len(0x4), Member, Type: unsigned __int64, PageFileLow
+        const s_field PageFileLow                                        = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xc , .bits = 0x4  };
+        // Data           : this(bf)+0x0:0x10 len(0xA), Member, Type: unsigned __int64, UsedPageTableEntries
+        const s_field UsedPageTableEntries                               = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x10, .bits = 0xa  };
+        // Data           : this(bf)+0x0:0x1A len(0x1), Member, Type: unsigned __int64, ShadowStack
+        const s_field ShadowStack                                        = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x1a, .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x1B len(0x5), Member, Type: unsigned __int64, Unused
+        const s_field Unused                                             = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x1b, .bits = 0x5  };
+        // Data           : this(bf)+0x0:0x20 len(0x20), Member, Type: unsigned __int64, PageFileHigh
+        const s_field PageFileHigh                                       = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x20, .bits = 0x20 };
+    }
     namespace _PEB {
         // Data           : this+0x0, Member, Type: unsigned char, InheritedAddressSpace
         const s_field InheritedAddressSpace                              = {
@@ -1624,6 +1721,38 @@ namespace offset {
         const s_field ShutdownThreadId                                   = {
             .byte = 0x50      , .bytes = 0x8       , .bit = 0x0 , .bits = 0x0  };
     }
+    namespace _MMPTE_PROTOTYPE {
+        // Data           : this(bf)+0x0:0x0 len(0x1), Member, Type: unsigned __int64, Valid
+        const s_field Valid                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x1 len(0x1), Member, Type: unsigned __int64, DemandFillProto
+        const s_field DemandFillProto                                    = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x2 len(0x1), Member, Type: unsigned __int64, HiberVerifyConverted
+        const s_field HiberVerifyConverted                               = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x3 len(0x1), Member, Type: unsigned __int64, ReadOnly
+        const s_field ReadOnly                                           = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x4 len(0x1), Member, Type: unsigned __int64, SwizzleBit
+        const s_field SwizzleBit                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x5 len(0x5), Member, Type: unsigned __int64, Protection
+        const s_field Protection                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x5 , .bits = 0x5  };
+        // Data           : this(bf)+0x0:0xA len(0x1), Member, Type: unsigned __int64, Prototype
+        const s_field Prototype                                          = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xa , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xB len(0x1), Member, Type: unsigned __int64, Combined
+        const s_field Combined                                           = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xb , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xC len(0x4), Member, Type: unsigned __int64, Unused1
+        const s_field Unused1                                            = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xc , .bits = 0x4  };
+        // Data           : this(bf)+0x0:0x10 len(0x30), Member, Type: __int64, ProtoAddress
+        const s_field ProtoAddress                                       = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x10, .bits = 0x30 };
+    }
     namespace _LDR_DATA_TABLE_ENTRY {
         // Data           : this+0x0, Member, Type: struct _LIST_ENTRY, InLoadOrderLinks
         const s_field InLoadOrderLinks                                   = {
@@ -1802,6 +1931,38 @@ namespace offset {
         // Data           : this+0x11C, Member, Type: unsigned char, SigningLevel
         const s_field SigningLevel                                       = {
             .byte = 0x11c     , .bytes = 0x1       , .bit = 0x0 , .bits = 0x0  };
+    }
+    namespace _MMPTE_TRANSITION {
+        // Data           : this(bf)+0x0:0x0 len(0x1), Member, Type: unsigned __int64, Valid
+        const s_field Valid                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x0 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x1 len(0x1), Member, Type: unsigned __int64, Write
+        const s_field Write                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x1 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x2 len(0x1), Member, Type: unsigned __int64, Spare
+        const s_field Spare                                              = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x2 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x3 len(0x1), Member, Type: unsigned __int64, IoTracker
+        const s_field IoTracker                                          = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x3 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x4 len(0x1), Member, Type: unsigned __int64, SwizzleBit
+        const s_field SwizzleBit                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x4 , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0x5 len(0x5), Member, Type: unsigned __int64, Protection
+        const s_field Protection                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x5 , .bits = 0x5  };
+        // Data           : this(bf)+0x0:0xA len(0x1), Member, Type: unsigned __int64, Prototype
+        const s_field Prototype                                          = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xa , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xB len(0x1), Member, Type: unsigned __int64, Transition
+        const s_field Transition                                         = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xb , .bits = 0x1  };
+        // Data           : this(bf)+0x0:0xC len(0x24), Member, Type: unsigned __int64, PageFrameNumber
+        const s_field PageFrameNumber                                    = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0xc , .bits = 0x24 };
+        // Data           : this(bf)+0x0:0x30 len(0x10), Member, Type: unsigned __int64, Unused
+        const s_field Unused                                             = {
+            .byte = 0x0       , .bytes = 0x8       , .bit = 0x30, .bits = 0x10 };
     }
     namespace _PUBLIC {
     }
