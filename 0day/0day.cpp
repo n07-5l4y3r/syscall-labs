@@ -4,6 +4,11 @@ int main(const int argc, char* argv[])
 {
 	if (argc >= 2)
 		MessageBoxA(0, "I just force win32u", "Bye!", MB_OK);
+
+	//auto cheese_menu = new cheese::c_cheese();
+	//cheese_menu->setup();
+
+	Sleep(1500);
 	
 	const auto hDev = intel_driver::Load();
 	const auto r0 = new ring0_exec(

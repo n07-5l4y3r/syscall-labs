@@ -5,6 +5,8 @@
 #include <Windows.h>
 #include <string>
 #include <cwctype>
+#include <map>
+#include <thread>
 
 #include "offsets/offset.h"
 
@@ -15,3 +17,4 @@
 #include "mem_mgr/mem_mgr.h"
 
 #include "cheese/gate.h"
+#include "cheese/cheese.h"

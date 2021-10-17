@@ -36,6 +36,7 @@ ULONG64 cheese::gate::gmod(const std::string& name)
 	const auto ppLdr = offset::ptr_field(offset::_PEB::Ldr, pPeb);
 	const auto pLdr = this->read_sc<PVOID>(ppLdr);
 	if (!pLdr) return 0;
+	printf("[%s] pLdr %p\n", __FUNCTION__, pLdr);
 
 	std::cout << "    "; PRINTVAR(pLdr, "%p");
 
@@ -73,15 +74,17 @@ cheese::gate::gate(ring0_exec* r0, phys_mem* phys, const std::string t, const st
 	printf("[+] " __FUNCTION__ "\n");
 
 	this->target_pid = this->pid(p);
-	if (!this->target_pid) { printf("obamna sehr kapoot\n"); return; }
-	this->target_peproc = this->r0->GetEProcessByPID(this->target_pid);
-	if (!this->target_peproc) { printf("obama aeusserst kapoot\n"); return; }
 
-	this->self_mgr = new mem_mgr(this->r0, this->phys, this->r0->GetCR3ByPID(GetCurrentProcessId()));
-	this->target_mgr = new mem_mgr(this->r0, this->phys, this->r0->GetCR3ByEprocess(this->target_peproc));
-	this->target_base = this->gmod(this->target_name = t);
-	
-	if (!this->target_base) { printf("obamna kapoot\n"); return; }
+	if (!this->target_pid) { printf("error this->target_pid\n"); return; }
+	this->target_peproc = this->phys->GetEProcessByPID(this->target_pid);
+	if (!this->target_peproc) { printf("error this->target_peproc\n"); return; }
+	this->self_cr3 = this->phys->GetCR3ByPID(GetCurrentProcessId());
+	if (!this->self_cr3) { printf("error this->self_cr3\n"); return; }
+	this->target_cr3 = this->phys->GetCR3ByEprocess(this->target_peproc);
+	if (!this->target_cr3) { printf("error this->target_cr3\n"); return; }
+	this->target_name = t;
+	this->target_base = this->gmod(this->target_name);
+	if (!this->target_base) { printf("error this->target_base\n"); return; }
 }
 
 cheese::gate::~gate()

@@ -366,3 +366,4 @@ FodyWeavers.xsd
 ntoskrnl.exe
 win32k.sys
 win32u.dll
+/0day/cheese
